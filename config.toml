@@ -1,7 +1,7 @@
 baseurl = "/"
 relativeurls = true
 languageCode = "en-us"
-title = "Lithium Theme"
+title = "Shredded Code"
 theme = "hugo-lithium-theme"
 googleAnalytics = ""
 disqusShortname = ""
@@ -18,6 +18,9 @@ publishDir = "docs"
     name = "GitHub"
     url = "https://github.com/simecek/blog"
 [[menu.main]]
+    name = "Blogger"
+    url = "https://applyr.blogspot.com"  
+[[menu.main]]
     name = "Twitter"
     url = "https://twitter.com/simecek42"
 
@@ -31,7 +34,7 @@ publishDir = "docs"
 
     [params.logo]
     url = "logo.png"
-    width = 50
-    height = 50
+    width = 100
+    height = 100
     alt = "Logo"
 

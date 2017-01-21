@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.18.1" />
+
+
+<title>Census data animated - Shredded Code</title>
+<meta property="og:title" content="Census data animated - Shredded Code">
+
+
+
+  
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png" 
+         width="100" 
+         height="100" 
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">About</a></li>
+    
+    <li><a href="https://applyr.blogspot.com">Blogger</a></li>
+    
+    <li><a href="https://github.com/simecek/blog">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/simecek42">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">1 min read</span>
+    
+
+    <h1 class="article-title">Census data animated</h1>
+
+    
+    <span class="article-date">March 1, 2016</span>
+    
+
+    <div class="article-content">
+      <p>I just adapted the code from <a href="http://blog.revolutionanalytics.com/2016/02/japans-ageing-population-animated-with-r.html">here</a> to harvest Czech Republic population estimates.</p>
+
+<p><img src="../../../../images/czechrep_pyramid.gif" alt="czech" /></p>
+
+<pre><code>library(idbr) # devtools::install_github('walkerke/idbr')
+library(ggplot2)
+library(animation)
+library(dplyr)
+library(ggthemes)
+
+idb_api_key(&quot;YOUR API CODE HERE&quot;)
+
+male &lt;- idb1('EZ', 2000:2050, sex = 'male') %&gt;%
+  mutate(POP = POP * -1,
+         SEX = 'Male')
+
+female &lt;- idb1('EZ', 2000:2050, sex = 'female') %&gt;%
+  mutate(SEX = 'Female')
+
+czechrep &lt;- rbind(male, female) %&gt;%
+  mutate(abs_pop = abs(POP))
+
+# Animate it with a for loop
+
+saveGIF({
+  
+  for (i in 2000:2050) {
+    
+    title &lt;- as.character(i)
+    
+    year_data &lt;- filter(czechrep, time == i)
+    
+    g1 &lt;- ggplot(year_data, aes(x = AGE, y = POP, fill = SEX, width = 1)) +
+      coord_fixed() + 
+      coord_flip() +
+      geom_bar(data = subset(year_data, SEX == &quot;Female&quot;), stat = &quot;identity&quot;) +
+      geom_bar(data = subset(year_data, SEX == &quot;Male&quot;), stat = &quot;identity&quot;) +
+      scale_y_continuous(breaks = seq(-101000, 101000, 101000/2),
+                         labels = paste0(as.character(c(seq(0.1, 0, -0.05), c(0.05, 0.1))), &quot;m&quot;), 
+                         limits = c(min(czechrep$POP), max(czechrep$POP))) +
+      theme_economist(base_size = 14) + 
+      scale_fill_manual(values = c('#ff9896', '#d62728')) + 
+      ggtitle(paste0('Population structure of Czech Republic, ', title)) + 
+      ylab('Population') + 
+      xlab('Age') + 
+      theme(legend.position = &quot;bottom&quot;, legend.title = element_blank()) + 
+      guides(fill = guide_legend(reverse = TRUE))
+    
+    print(g1)
+    
+  }
+  
+}, movie.name = 'czechrep_pyramid.gif', interval = 0.1, ani.width = 700, ani.height = 600)
+</code></pre>
+
+    </div>
+  </article>
+
+  
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/r.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/yaml.min.js"></script>
+    
+    <script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+    
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    });
+    </script>
+    <script type="text/javascript"
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+  </body>
+</html>
+

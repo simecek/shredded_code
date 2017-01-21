@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.18.1" />
+
+
+<title>Animated ggplots with gganimate - Shredded Code</title>
+<meta property="og:title" content="Animated ggplots with gganimate - Shredded Code">
+
+
+
+  
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png" 
+         width="100" 
+         height="100" 
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">About</a></li>
+    
+    <li><a href="https://applyr.blogspot.com">Blogger</a></li>
+    
+    <li><a href="https://github.com/simecek/blog">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/simecek42">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">Animated ggplots with gganimate</h1>
+
+    
+    <span class="article-date">February 19, 2016</span>
+    
+
+    <div class="article-content">
+      <p>There is now an easy way to create an animated GIF with <a href="https://github.com/dgrtwo/gganimate">gganimate</a> package:</p>
+
+<p><img src="../../../../images/gganimate_gapminder.gif" alt="gapminder demo" /></p>
+
+<pre><code>library(gapminder)
+library(ggplot2)
+library(gganimate)
+theme_set(theme_bw())
+
+p &lt;- ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, color = continent, frame = year)) +
+  geom_point() +
+  scale_x_log10()
+
+gg_animate(p)
+</code></pre>
+
+<p>See that all you need to do is to set <code>frame</code> variable. A more sophisticated example from <a href="http://varianceexplained.org/r/why-I-use-ggplot2/">David Robinson</a>.</p>
+
+<p><img src="../../../../images/gganimate_kernels.gif" alt="kernels demo" /></p>
+
+<pre><code>library(dplyr)
+library(ggplot2)
+library(broom)
+library(gganimate)
+theme_set(theme_bw())
+
+set.seed(2016)
+min_weight &lt;- .0005
+
+# original data and bandwidths
+bws &lt;- c(.25, .5, .75, 1)
+x_data &lt;- c(rnorm(30, 0), rnorm(15, 6))
+
+# add some y noise to be visible
+dat &lt;- data_frame(x = x_data) %&gt;%
+  mutate(y = rnorm(n(), .5, .025))
+
+# density fits for each banwidth
+fits &lt;- dat %&gt;%
+  inflate(bw = bws) %&gt;%
+  do(tidy(density(.$x, bw = .$bw[1], from = -4, to = 9, n = 100)))
+centers &lt;- sort(unique(fits$x))
+
+# calculate weights at each x0 center
+prep &lt;- dat %&gt;%
+  inflate(center = centers, bw = bws) %&gt;%
+  mutate(weight = dnorm(x, center, bw)) %&gt;%
+  filter(weight &gt; min_weight)
+
+# also raster data for the background
+ras &lt;- expand.grid(x = seq(min(centers), max(centers), .05),
+                   y = c(0, 1)) %&gt;%
+  inflate(center = centers, bw = bws) %&gt;%
+  mutate(weight = dnorm(x, center, bw)) %&gt;%
+  filter(weight &gt; min_weight)
+
+# create the plot with layers for the background, the points, the red fills, the
+# red vertical line, and the cumulative line plot
+p &lt;- ggplot(prep, aes(x, y)) +
+  geom_raster(aes(alpha = weight, frame = center), data = ras, fill = &quot;gray&quot;, hjust = 0, vjust = 0) +
+  geom_point(shape = 1, size = 3, data = dat, alpha = .25) +
+  geom_point(aes(alpha = weight, frame = center), color = &quot;red&quot;, size = 3) +
+  geom_vline(aes(xintercept = x, frame = x), data = fits, lty = 2, color = &quot;red&quot;) +
+  geom_line(aes(frame = x, cumulative = TRUE), color = &quot;red&quot;, data = fits) +
+  coord_cartesian(ylim = c(0, max(prep$y))) +
+  facet_wrap(~bw) +
+  ylab(&quot;&quot;)
+
+g &lt;- gg_animate(p, interval = .1, title_frame = FALSE)
+
+g
+</code></pre>
+
+    </div>
+  </article>
+
+  
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/r.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/yaml.min.js"></script>
+    
+    <script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+    
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    });
+    </script>
+    <script type="text/javascript"
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+  </body>
+</html>
+

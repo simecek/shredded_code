@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.18.1" />
+
+
+<title>Docker One-liners - Shredded Code</title>
+<meta property="og:title" content="Docker One-liners - Shredded Code">
+
+
+
+  
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png" 
+         width="100" 
+         height="100" 
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">About</a></li>
+    
+    <li><a href="https://applyr.blogspot.com">Blogger</a></li>
+    
+    <li><a href="https://github.com/simecek/blog">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/simecek42">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">Docker One-liners</h1>
+
+    
+    <span class="article-date">February 18, 2016</span>
+    
+
+    <div class="article-content">
+      
+
+<p>Let other people care about the installation procedures. The best thing about docker is that you get your app installed and running with just one line of code. I am listing here my favorite docker images and one-liners to run them.</p>
+
+<p>My favorite way to run docker containers is a virtual machine on <a href="https://m.do.co/c/673c97887267">Digital Ocean</a> with Ubuntu and docker preinstalled (see &lsquo;How to start Digital Ocean droplet?&rsquo; <a href="https://github.com/churchill-lab/sysgen2015">here</a> ).</p>
+
+<h3 id="rstudio-server">RStudio Server</h3>
+
+<p>I use <a href="https://hub.docker.com/r/rocker/hadleyverse/">rocker/hadleyverse</a> docker image</p>
+
+<pre><code>docker run -d -p 8787:8787 -e USER=rstudio -e PASSWORD=your_secret_password rocker/hadleyverse
+</code></pre>
+
+<p>And I also have <a href="https://github.com/simecek/GoogleCloud/blob/master/docker/rstudio/Dockerfile">my own versions</a> with additional R packages preinstalled:</p>
+
+<pre><code>docker run -d -p 8787:8787 -e USER=rstudio -e PASSWORD=your_secret_password simecek/rstudio
+</code></pre>
+
+<p>Even if you forgot to install some software, you can always <a href="http://simecek.github.io/Log-Into-A-Running-Docker-Container/">log into running docker container</a> and do so.</p>
+
+<h3 id="shiny-server">Shiny Server</h3>
+
+<p>If you do not want to pay for <a href="https://www.shinyapps.io/">shinyapps.io</a>, you need to run your own Shiny Server. Note I use <code>-v</code> option to attach <code>\shiny</code> folder with my shiny applications.</p>
+
+<p><code>docker run -d -p 3838:3838 -v /shiny/:/srv/shiny-server/ -v /srv/shinylog:/var/log rocker/shiny</code></p>
+
+<h3 id="jupyter-notebook">Jupyter Notebook</h3>
+
+<p>An easy way to get Jupyter Notebook with Python 2, Python 3 and R.</p>
+
+<pre><code>docker run -d -p 8888:8890 jupyter/datascience-notebook start-notebook.sh
+</code></pre>
+
+<p>Also, Kaggle offers more fancy <a href="http://jamiehall.cc/post/how-to-get-started-with-data-science-in-containers">IPython notebook</a> with numerous machine learning packages preinstalled</p>
+
+<pre><code>docker run -v $PWD:/tmp/working -w=/tmp/working -p 8888:8888 --rm -it kaggle/python jupyter notebook --no-browser --ip=&quot;0.0.0.0&quot; --notebook-dir=/tmp/working
+</code></pre>
+
+<p>And who would not like to try Google&rsquo;s deep learning TensorFlow module:</p>
+
+<pre><code>docker run -d -p 8888:8888 b.gcr.io/tensorflow/tensorflow sh -c &quot;jupyter notebook /notebook&quot;
+</code></pre>
+
+<h3 id="wordpress">Wordpress</h3>
+
+<p>Finally, just a few days ago I tried to run my own wordpress for the first time. It actually runs two containers: <code>wordpress</code> itself and the linked <code>mysql</code> container.</p>
+
+<pre><code>docker run --name wordpressdb -e MYSQL_ROOT_PASSWORD=your_secret_password -e MYSQL_DATABASE=wordpress -d mysql
+docker run -e WORDPRESS_DB_PASSWORD=your_secret_password -d --name wordpress --link wordpressdb:mysql -p 8080:80 -v &quot;$PWD/wordpress/&quot;:/var/www/html  wordpress
+</code></pre>
+
+    </div>
+  </article>
+
+  
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/r.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/yaml.min.js"></script>
+    
+    <script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+    
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    });
+    </script>
+    <script type="text/javascript"
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+  </body>
+</html>
+
