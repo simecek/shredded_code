@@ -4,7 +4,7 @@ languageCode = "en-us"
 title = "Shredded Code"
 theme = "hugo-lithium-theme"
 googleAnalytics = "UA-90647482-1"
-disqusShortname = "petrsimecek"
+disqusShortname = "https-simecek-github-io-blog"
 ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
 publishDir = "docs"
 
