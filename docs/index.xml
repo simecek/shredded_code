@@ -31,7 +31,7 @@
 
 &lt;p&gt;&lt;img src=&#34;./images/czechrep_pyramid.gif&#34; alt=&#34;czech&#34; /&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;library(idbr) # devtools::install_github(&#39;walkerke/idbr&#39;)
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(idbr) # devtools::install_github(&#39;walkerke/idbr&#39;)
 library(ggplot2)
 library(animation)
 library(dplyr)
@@ -94,7 +94,7 @@ saveGIF({
 
 &lt;p&gt;&lt;img src=&#34;./images/gganimate_gapminder.gif&#34; alt=&#34;gapminder demo&#34; /&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;library(gapminder)
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(gapminder)
 library(ggplot2)
 library(gganimate)
 theme_set(theme_bw())
@@ -110,7 +110,7 @@ gg_animate(p)
 
 &lt;p&gt;&lt;img src=&#34;./images/gganimate_kernels.gif&#34; alt=&#34;kernels demo&#34; /&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;library(dplyr)
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(dplyr)
 library(ggplot2)
 library(broom)
 library(gganimate)

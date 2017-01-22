@@ -7,7 +7,7 @@ I just adapted the code from [here](http://blog.revolutionanalytics.com/2016/02/
 
 ![czech](/images/czechrep_pyramid.gif)
     
-```    
+```r    
 library(idbr) # devtools::install_github('walkerke/idbr')
 library(ggplot2)
 library(animation)

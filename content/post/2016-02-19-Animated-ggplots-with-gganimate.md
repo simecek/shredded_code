@@ -7,7 +7,7 @@ There is now an easy way to create an animated GIF with [gganimate](https://gith
 
 ![gapminder demo](/images/gganimate_gapminder.gif)
 
-```
+```r
 library(gapminder)
 library(ggplot2)
 library(gganimate)
@@ -24,7 +24,7 @@ See that all you need to do is to set `frame` variable. A more sophisticated exa
 
 ![kernels demo](/images/gganimate_kernels.gif)
 
-```
+```r
 library(dplyr)
 library(ggplot2)
 library(broom)
