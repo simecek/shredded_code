@@ -1,4 +1,4 @@
-baseurl = "/"
+baseurl = "https://simecek.github.io/"
 relativeurls = true
 languageCode = "en-us"
 title = "Shredded Code"
