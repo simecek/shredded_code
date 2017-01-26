@@ -1,4 +1,5 @@
-baseurl = "https://simecek.github.io/"
+baseurl = "https://simecek.github.io/blog/"
+relativeurls = true
 languageCode = "en-us"
 title = "Shredded Code"
 theme = "hugo-lithium-theme"
@@ -25,6 +26,7 @@ publishDir = "docs"
 
 [params]
     description = "A website built through Hugo and blogdown."
+    disqus_url = "https://simecek.github.io/"
 
     # options for highlight.js (version, additional languages, and theme)
     highlightjsVersion = "9.9.0"
