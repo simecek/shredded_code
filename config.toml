@@ -1,5 +1,4 @@
 baseurl = "https://simecek.github.io/"
-relativeurls = true
 languageCode = "en-us"
 title = "Shredded Code"
 theme = "hugo-lithium-theme"
@@ -37,4 +36,3 @@ publishDir = "docs"
     width = 100
     height = 100
     alt = "Logo"
-
