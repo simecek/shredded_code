@@ -1,0 +1,65 @@
+---
+title: "Interactive Graphs With Plotly And Ggiraph Packages"
+date: 2017-01-26
+---
+
+Imagine that you have a plot like this and want to make it interactive (e.g. show exact values on hover or print the model name).
+
+```{r}
+suppressPackageStartupMessages(library(ggplot2))
+
+p <- ggplot(mpg, aes(displ, hwy, color=class)) + 
+  geom_point() +
+  labs(title="Smaller car = better MPG",
+       subtitle="Fuel economy data from 1999 and 2008 for 38 popular models of car",
+       caption = "adapted from http://fueleconomy.gov",
+       x="engine displacement (l)",
+       y="highway (miles per gallon)")
+
+print(p)
+```
+
+## Plotly
+
+Getting `plotly` of this graph is just one-liner. From now all ggplots can be easily made interactive.
+
+```{r}
+suppressPackageStartupMessages(library(plotly))
+
+ggplotly(p)
+```
+
+And if you need some other information to be printed (like `model`), add it to aesthetics:
+
+```{r}
+p2 <- ggplot(mpg, aes(x=displ, y=hwy, color=class, model=model)) + 
+  geom_point() +
+  labs(title="Smaller car = better MPG",
+       subtitle="Fuel economy data from 1999 and 2008 for 38 popular models of car",
+       caption = "adapted from http://fueleconomy.gov",
+       x="engine displacement (l)",
+       y="highway (miles per gallon)")
+
+ggplotly(p2)
+```
+
+Plotly is able to create graphs with tens of thousands data points.
+
+## Ggiraph
+
+Another way to create analogical plots is `ggiraph` package.
+
+```{r}
+suppressPackageStartupMessages(library(ggiraph))
+p3 <- ggplot(mpg, aes(x=displ, y=hwy, color=class, tooltip=model)) + 
+  geom_point_interactive(size=I(2)) + 
+  labs(title="Smaller car = better MPG",
+       subtitle="Fuel economy data from 1999 and 2008 for 38 popular models of car",
+       caption = "adapted from http://fueleconomy.gov",
+       x="engine displacement (l)",
+       y="highway (miles per gallon)")
+
+ggiraph(code = print(p3), selection_type = "single")
+```
+
+It not only looks great but it also works with R/Shiny (e.g. clocking on a dot can be used as input), see [the vignette](https://cran.r-project.org/web/packages/ggiraph/vignettes/shiny_usage.html).
