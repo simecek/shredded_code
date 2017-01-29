@@ -3,4 +3,49 @@ title: "Microsoft Face API"
 date: 2017-01-28T23:52:09-05:00
 ---
 
-Adapted from [Longhow Lam's Blog](https://longhowlam.wordpress.com/2015/12/21/analyzing-twitter-faces-in-r-with-microsoft-project-oxford/)
+Before you start, you need to register at [Microsoft Cognitive Services](https://www.microsoft.com/cognitive-services/en-us/) and ask for a free trial. Copy Face-Preview API key into an environment  variable `faceKEY` as follows `Sys.setenv(faceKEY = "***YOUR*KEY***")`. Here, I will demonstrate Face API on my Twitter profile picture:
+
+![](https://pbs.twimg.com/profile_images/420950459289833472/JtRoD1cw_400x400.jpeg)
+
+
+```{r}
+library(httr)
+ 
+faceURL = "https://westus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceAttributes=age,gender,smile,facialHair"
+img.url = "https://pbs.twimg.com/profile_images/420950459289833472/JtRoD1cw_400x400.jpeg"
+
+faceKEY = Sys.getenv("faceKEY")
+ 
+mybody = list(url = img.url)
+ 
+faceResponse = POST(
+  url = faceURL, 
+  content_type('application/json'), add_headers(.headers = c('Ocp-Apim-Subscription-Key' = faceKEY)),
+  body = mybody,
+  encode = 'json'
+)
+
+# status ok = 200
+faceResponse$status
+```
+
+All information about picture is now easily accesible by applying the function `content`.
+
+```{r}
+content(faceResponse)
+```
+
+For example happiness or beardiness can be extracted...
+
+```{r}
+content(faceResponse)[[1]]$faceAttributes$smile
+content(faceResponse)[[1]]$faceAttributes$facialHair$beard
+```
+
+
+
+
+
+Adapted from [Longhow Lam's Blog](https://longhowlam.wordpress.com/2015/12/21/analyzing-twitter-faces-in-r-with-microsoft-project-oxford/) by me, a crazy analyst with a little bit of beard.
+
+
