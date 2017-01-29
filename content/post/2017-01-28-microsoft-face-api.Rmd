@@ -1,0 +1,6 @@
+---
+title: "Microsoft Face API"
+date: 2017-01-28T23:52:09-05:00
+---
+
+Adapted from [Longhow Lam's Blog](https://longhowlam.wordpress.com/2015/12/21/analyzing-twitter-faces-in-r-with-microsoft-project-oxford/)

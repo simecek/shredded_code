@@ -6,8 +6,30 @@
     <description>Recent content on Shredded Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 26 Jan 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 28 Jan 2017 23:52:09 -0500</lastBuildDate>
     <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Microsoft Face API</title>
+      <link>/2017/01/28/microsoft-face-api/</link>
+      <pubDate>Sat, 28 Jan 2017 23:52:09 -0500</pubDate>
+      
+      <guid>/2017/01/28/microsoft-face-api/</guid>
+      <description>&lt;!-- BLOGDOWN-BODY-BEFORE
+
+/BLOGDOWN-BODY-BEFORE --&gt;
+
+&lt;p&gt;Adapted from &lt;a href=&#34;https://longhowlam.wordpress.com/2015/12/21/analyzing-twitter-faces-in-r-with-microsoft-project-oxford/&#34;&gt;Longhow Lam’s Blog&lt;/a&gt;&lt;/p&gt;
+
+
+&lt;!-- BLOGDOWN-HEAD
+
+
+
+
+/BLOGDOWN-HEAD --&gt;
+</description>
+    </item>
     
     <item>
       <title>Interactive Graphs With Plotly And Ggiraph Packages</title>
