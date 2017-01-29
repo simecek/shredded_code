@@ -43,7 +43,7 @@ faceResponse = POST(
 # status ok = 200
 faceResponse$status&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## [1] 200&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;All information about picture is now easily accesible by applying the function &lt;code&gt;content&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;All information about a picture is now easily accesible by applying the function &lt;code&gt;content&lt;/code&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;content(faceResponse)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## [[1]]
 ## [[1]]$faceId
@@ -82,7 +82,7 @@ faceResponse$status&lt;/code&gt;&lt;/pre&gt;
 ## 
 ## [[1]]$faceAttributes$facialHair$sideburns
 ## [1] 0&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;For example happiness or beardiness can be extracted…&lt;/p&gt;
+&lt;p&gt;For example happiness or beardiness can be extracted as follows.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;content(faceResponse)[[1]]$faceAttributes$smile&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## [1] 0.477&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;content(faceResponse)[[1]]$faceAttributes$facialHair$beard&lt;/code&gt;&lt;/pre&gt;

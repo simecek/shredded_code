@@ -32,7 +32,7 @@ faceResponse = POST(
 # status ok = 200
 faceResponse$status</code></pre>
 <pre><code>## [1] 200</code></pre>
-<p>All information about picture is now easily accesible by applying the function <code>content</code>.</p>
+<p>All information about a picture is now easily accesible by applying the function <code>content</code>.</p>
 <pre class="r"><code>content(faceResponse)</code></pre>
 <pre><code>## [[1]]
 ## [[1]]$faceId
@@ -71,7 +71,7 @@ faceResponse$status</code></pre>
 ## 
 ## [[1]]$faceAttributes$facialHair$sideburns
 ## [1] 0</code></pre>
-<p>For example happiness or beardiness can be extracted…</p>
+<p>For example happiness or beardiness can be extracted as follows.</p>
 <pre class="r"><code>content(faceResponse)[[1]]$faceAttributes$smile</code></pre>
 <pre><code>## [1] 0.477</code></pre>
 <pre class="r"><code>content(faceResponse)[[1]]$faceAttributes$facialHair$beard</code></pre>

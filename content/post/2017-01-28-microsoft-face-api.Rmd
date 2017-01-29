@@ -29,13 +29,13 @@ faceResponse = POST(
 faceResponse$status
 ```
 
-All information about picture is now easily accesible by applying the function `content`.
+All information about a picture is now easily accesible by applying the function `content`.
 
 ```{r}
 content(faceResponse)
 ```
 
-For example happiness or beardiness can be extracted...
+For example happiness or beardiness can be extracted as follows.
 
 ```{r}
 content(faceResponse)[[1]]$faceAttributes$smile
