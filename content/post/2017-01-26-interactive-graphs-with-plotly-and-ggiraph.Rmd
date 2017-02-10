@@ -43,6 +43,22 @@ p2 <- ggplot(mpg, aes(x=displ, y=hwy, color=class, model=model)) +
 ggplotly(p2)
 ```
 
+If you want to show only `model` label:
+
+```{r}
+p2 <- ggplot(mpg, aes(x=displ, y=hwy, color=class, text=model)) + 
+  geom_point() +
+  labs(title="Smaller car = better MPG",
+       subtitle="Fuel economy data from 1999 and 2008 for 38 popular models of car",
+       caption = "adapted from http://fueleconomy.gov",
+       x="engine displacement (l)",
+       y="highway (miles per gallon)")
+
+# the only tooltip is now `text`
+ggplotly(p2, tooltip = "text")
+```
+
+
 Plotly is able to create graphs with tens of thousands data points.
 
 ## Ggiraph
