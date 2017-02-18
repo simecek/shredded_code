@@ -34,7 +34,7 @@ If you do not want to pay for [shinyapps.io](https://www.shinyapps.io/), you nee
 An easy way to get Jupyter Notebook with Python 2, Python 3 and R.
 
 ```
-docker run -d -p 8888:8890 jupyter/datascience-notebook start-notebook.sh
+sudo docker run -d -p 80:8888 --restart=always --name dsnb jupyter/datascience-notebook start-notebook.sh --NotebookApp.password='sha1:YOUR*PASSWD*SHA1'
 ```
 
 Also, Kaggle offers more fancy [IPython notebook](http://jamiehall.cc/post/how-to-get-started-with-data-science-in-containers) with numerous machine learning packages preinstalled
