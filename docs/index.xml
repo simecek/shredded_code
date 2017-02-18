@@ -6,8 +6,51 @@
     <description>Recent content on Shredded Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 28 Jan 2017 23:52:09 -0500</lastBuildDate>
+    <lastBuildDate>Fri, 17 Feb 2017 23:19:03 -0500</lastBuildDate>
     <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Data Science Amazon VM With Start/Stop Functionality</title>
+      <link>/2017/02/17/data-science-amazon-vm-with-start/stop-functionality/</link>
+      <pubDate>Fri, 17 Feb 2017 23:19:03 -0500</pubDate>
+      
+      <guid>/2017/02/17/data-science-amazon-vm-with-start/stop-functionality/</guid>
+      <description>&lt;p&gt;Jeff Leek has tried to move to the cloud with his &lt;a href=&#34;http://simplystatistics.org/2016/11/08/chromebook-part2/&#34;&gt;Chromebook Experiment&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;My motivation is different but my goal is similar. Would it be possible to create a virtual machine (VM) in the cloud that after an initial setting&amp;hellip;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;It can be started/stopped from the web browser (you do not need SSH into it). Ideally, I also want a command line client to start/stop VM.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;It has RStudio / Jupyter Notebook that starts/stops with the machine. Ideally, R/python updates should be super-easy.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I do not claim that the following solution is necessarily the best one but it works for me. If you are familiar with Amazon EC2:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Launch a new instance - choose “Ubuntu Server 14.04 LTS (HVM), SSD Volume Type” (because of systemd process manager)&lt;/li&gt;
+&lt;li&gt;Be careful, your VM will need public IP, more than default (8 GB) disk space and port 80 open for incoming/outgoing connection&lt;/li&gt;
+&lt;li&gt;SSH into it and run the following script&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;# run updates
+sudo apt-get update
+# install docker
+sudo apt-get install -y docker.io
+# pull docker image jupyter/datascience-notebook (scikit-learn, pandas, … preinstalled)
+sudo docker pull jupyter/datascience-notebook
+# get YOUR PASSWORD sha1 hash from IPython.lib.passwd(YOUR PASSWORD) 
+# start the docker container 
+sudo docker run -d -p 80:8888 --restart=always --name dsnb jupyter/datascience-notebook start-notebook.sh --NotebookApp.password=&#39;sha1:YOUR PASSWORD SHA1 HASH&#39;
+# navigate your browser to http://YOUR_MACHINE_PUBLIC_IP, passwd = YOUR PASSWORD
+# make sure everything is running as expected
+sudo docker ps
+# if not stop and remove the docker container: sudo docker stop dsnb; sudo docker rm dsnb
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This way I pay for the VM only when I actually use it (plus some pennies for permanent disk space). In February 2017, the cost was $0.05/hour for t2.medium (4GB memory, 2vCPUs) and $0.10/hour for t2.large (8GB memory, 2vCPUs).&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Microsoft Face API</title>

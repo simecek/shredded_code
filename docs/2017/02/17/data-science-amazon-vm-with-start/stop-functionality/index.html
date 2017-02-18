@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.18.1" />
+
+
+<title>Data Science Amazon VM With Start/Stop Functionality - Shredded Code</title>
+<meta property="og:title" content="Data Science Amazon VM With Start/Stop Functionality - Shredded Code">
+
+
+
+  
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" href="../../../../../css/main.css" media="all">
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../../" class="nav-logo">
+    <img src="../../../../../images/logo.png" 
+         width="100" 
+         height="100" 
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../../about/">About</a></li>
+    
+    <li><a href="https://applyr.blogspot.com">Blogger</a></li>
+    
+    <li><a href="https://github.com/simecek/blog">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/simecek42">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">Data Science Amazon VM With Start/Stop Functionality</h1>
+
+    
+    <span class="article-date">February 17, 2017</span>
+    
+
+    <div class="article-content">
+      <p>Jeff Leek has tried to move to the cloud with his <a href="http://simplystatistics.org/2016/11/08/chromebook-part2/">Chromebook Experiment</a>.</p>
+
+<p>My motivation is different but my goal is similar. Would it be possible to create a virtual machine (VM) in the cloud that after an initial setting&hellip;</p>
+
+<ul>
+<li><p>It can be started/stopped from the web browser (you do not need SSH into it). Ideally, I also want a command line client to start/stop VM.</p></li>
+
+<li><p>It has RStudio / Jupyter Notebook that starts/stops with the machine. Ideally, R/python updates should be super-easy.</p></li>
+</ul>
+
+<p>I do not claim that the following solution is necessarily the best one but it works for me. If you are familiar with Amazon EC2:</p>
+
+<ul>
+<li>Launch a new instance - choose “Ubuntu Server 14.04 LTS (HVM), SSD Volume Type” (because of systemd process manager)</li>
+<li>Be careful, your VM will need public IP, more than default (8 GB) disk space and port 80 open for incoming/outgoing connection</li>
+<li>SSH into it and run the following script</li>
+</ul>
+
+<pre><code class="language-sh"># run updates
+sudo apt-get update
+# install docker
+sudo apt-get install -y docker.io
+# pull docker image jupyter/datascience-notebook (scikit-learn, pandas, … preinstalled)
+sudo docker pull jupyter/datascience-notebook
+# get YOUR PASSWORD sha1 hash from IPython.lib.passwd(YOUR PASSWORD) 
+# start the docker container 
+sudo docker run -d -p 80:8888 --restart=always --name dsnb jupyter/datascience-notebook start-notebook.sh --NotebookApp.password='sha1:YOUR PASSWORD SHA1 HASH'
+# navigate your browser to http://YOUR_MACHINE_PUBLIC_IP, passwd = YOUR PASSWORD
+# make sure everything is running as expected
+sudo docker ps
+# if not stop and remove the docker container: sudo docker stop dsnb; sudo docker rm dsnb
+</code></pre>
+
+<p>This way I pay for the VM only when I actually use it (plus some pennies for permanent disk space). In February 2017, the cost was $0.05/hour for t2.medium (4GB memory, 2vCPUs) and $0.10/hour for t2.large (8GB memory, 2vCPUs).</p>
+
+    </div>
+  </article>
+
+  
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname = 'https-simecek-github-io-blog';
+  var disqus_url = 'https:\/\/simecek.github.io\/blog' + '\/2017\/02\/17\/data-science-amazon-vm-with-start\/stop-functionality\/';
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../../images/hugo-logo.png" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/r.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/yaml.min.js"></script>
+    
+    <script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+    
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    });
+    </script>
+    <script type="text/javascript"
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-90647482-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+
