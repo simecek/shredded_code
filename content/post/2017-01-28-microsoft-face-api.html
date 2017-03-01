@@ -1,0 +1,48 @@
+---
+title: "Microsoft Face API"
+date: 2017-01-28T23:52:09-05:00
+---
+
+<!-- BLOGDOWN-HEAD -->
+<!-- /BLOGDOWN-HEAD -->
+
+<!-- BLOGDOWN-BODY-BEFORE -->
+<!-- /BLOGDOWN-BODY-BEFORE -->
+<p>Before you start, you need to register at <a href="https://www.microsoft.com/cognitive-services/en-us/">Microsoft Cognitive Services</a> and ask for a free trial. Copy Face-Preview API key into an environment variable <code>faceKEY</code> as follows <code>Sys.setenv(faceKEY = &quot;***YOUR*KEY***&quot;)</code>. Here, I will demonstrate Face API on my Twitter profile picture:</p>
+<div class="figure">
+<img src="https://pbs.twimg.com/profile_images/420950459289833472/JtRoD1cw_400x400.jpeg" />
+
+</div>
+<pre class="r"><code>library(httr)
+ 
+faceURL = &quot;https://westus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceAttributes=age,gender,smile,facialHair&quot;
+img.url = &quot;https://pbs.twimg.com/profile_images/420950459289833472/JtRoD1cw_400x400.jpeg&quot;
+
+faceKEY = Sys.getenv(&quot;faceKEY&quot;)
+ 
+mybody = list(url = img.url)
+ 
+faceResponse = POST(
+  url = faceURL, 
+  content_type(&#39;application/json&#39;), add_headers(.headers = c(&#39;Ocp-Apim-Subscription-Key&#39; = faceKEY)),
+  body = mybody,
+  encode = &#39;json&#39;
+)
+
+# status ok = 200
+faceResponse$status</code></pre>
+<pre><code>## [1] 401</code></pre>
+<p>All information about a picture is now easily accesible by applying the function <code>content</code>.</p>
+<pre class="r"><code>content(faceResponse)</code></pre>
+<pre><code>## $error
+## $error$code
+## [1] &quot;Unspecified&quot;
+## 
+## $error$message
+## [1] &quot;Access denied due to invalid subscription key. Make sure you are subscribed to an API you are trying to call and provide the right key.&quot;</code></pre>
+<p>For example happiness or beardiness can be extracted as follows.</p>
+<pre class="r"><code>content(faceResponse)[[1]]$faceAttributes$smile</code></pre>
+<pre><code>## NULL</code></pre>
+<pre class="r"><code>content(faceResponse)[[1]]$faceAttributes$facialHair$beard</code></pre>
+<pre><code>## NULL</code></pre>
+<p>Adapted from <a href="https://longhowlam.wordpress.com/2015/12/21/analyzing-twitter-faces-in-r-with-microsoft-project-oxford/">Longhow Lam’s Blog</a> by me, a crazy analyst with a little bit of beard.</p>
