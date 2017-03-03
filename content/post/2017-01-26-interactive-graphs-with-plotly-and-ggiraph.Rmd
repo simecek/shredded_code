@@ -78,4 +78,4 @@ p3 <- ggplot(mpg, aes(x=displ, y=hwy, color=class, tooltip=model)) +
 ggiraph(code = print(p3), selection_type = "single")
 ```
 
-It not only looks great but it also works with R/Shiny (e.g. clocking on a dot can be used as input), see [the vignette](https://cran.r-project.org/web/packages/ggiraph/vignettes/shiny_usage.html).
+It not only looks great but it also works with R/Shiny (e.g. clicking on a dot can be used as input), see [the vignette](https://cran.r-project.org/web/packages/ggiraph/vignettes/shiny_usage.html).
