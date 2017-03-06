@@ -2,58 +2,58 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>/2017/02/17/data-science-amazon-vm-with-start/stop-functionality/</loc>
+    <loc>https://simecek.github.io/blog/2017/02/17/data-science-amazon-vm-with-start/stop-functionality/</loc>
     <lastmod>2017-02-17T23:19:03-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/2017/01/28/microsoft-face-api/</loc>
+    <loc>https://simecek.github.io/blog/2017/01/28/microsoft-face-api/</loc>
     <lastmod>2017-01-28T23:52:09-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/2017/01/26/interactive-graphs-with-plotly-and-ggiraph-packages/</loc>
+    <loc>https://simecek.github.io/blog/2017/01/26/interactive-graphs-with-plotly-and-ggiraph-packages/</loc>
     <lastmod>2017-01-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/about/</loc>
+    <loc>https://simecek.github.io/blog/about/</loc>
     <lastmod>2016-05-05T21:48:51-07:00</lastmod>
   </url>
   
   <url>
-    <loc>/2016/03/01/census-data-animated/</loc>
+    <loc>https://simecek.github.io/blog/2016/03/01/census-data-animated/</loc>
     <lastmod>2016-03-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2016/02/19/animated-ggplots-with-gganimate/</loc>
+    <loc>https://simecek.github.io/blog/2016/02/19/animated-ggplots-with-gganimate/</loc>
     <lastmod>2016-02-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2016/02/18/docker-one-liners/</loc>
+    <loc>https://simecek.github.io/blog/2016/02/18/docker-one-liners/</loc>
     <lastmod>2016-02-18T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2016/01/30/stop-and-remove-all-containers/</loc>
+    <loc>https://simecek.github.io/blog/2016/01/30/stop-and-remove-all-containers/</loc>
     <lastmod>2016-01-30T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2016/01/26/log-into-a-running-docker-container/</loc>
+    <loc>https://simecek.github.io/blog/2016/01/26/log-into-a-running-docker-container/</loc>
     <lastmod>2016-01-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/</loc>
+    <loc>https://simecek.github.io/blog/post/</loc>
     <lastmod>2017-02-17T23:19:03-05:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/</loc>
+    <loc>https://simecek.github.io/blog/</loc>
     <lastmod>2017-02-17T23:19:03-05:00</lastmod>
     <priority>0</priority>
   </url>
