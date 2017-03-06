@@ -22,7 +22,7 @@ publishDir = "docs"
     url = "https://applyr.blogspot.com"  
 [[menu.main]]
     name = "Twitter"
-    url = "https://twitter.com/simecek42"
+    url = "https://twitter.com/simecek"
 
 [params]
     description = "A website built through Hugo and blogdown."
