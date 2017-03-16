@@ -27,6 +27,7 @@ publishDir = "docs"
 [params]
     description = "A website built through Hugo and blogdown."
     disqus_url = "https://simecek.github.io/"
+    AnalyticsID = "UA-90647482-1"
 
     # options for highlight.js (version, additional languages, and theme)
     highlightjsVersion = "9.9.0"
