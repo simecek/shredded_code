@@ -2,59 +2,69 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://simecek.github.io/blog/2017/02/17/data-science-amazon-vm-with-start/stop-functionality/</loc>
+    <loc>/2017/04/03/r-magic-in-jupyter-notebooks/</loc>
+    <lastmod>2017-04-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2017/03/31/tweeting-with-tweepy/</loc>
+    <lastmod>2017-03-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2017/02/17/data-science-amazon-vm-with-start/stop-functionality/</loc>
     <lastmod>2017-02-17T23:19:03-05:00</lastmod>
   </url>
   
   <url>
-    <loc>https://simecek.github.io/blog/2017/01/28/microsoft-face-api/</loc>
+    <loc>/2017/01/28/microsoft-face-api/</loc>
     <lastmod>2017-01-28T23:52:09-05:00</lastmod>
   </url>
   
   <url>
-    <loc>https://simecek.github.io/blog/2017/01/26/interactive-graphs-with-plotly-and-ggiraph-packages/</loc>
+    <loc>/2017/01/26/interactive-graphs-with-plotly-and-ggiraph-packages/</loc>
     <lastmod>2017-01-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://simecek.github.io/blog/about/</loc>
+    <loc>/about/</loc>
     <lastmod>2016-05-05T21:48:51-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://simecek.github.io/blog/2016/03/01/census-data-animated/</loc>
+    <loc>/2016/03/01/census-data-animated/</loc>
     <lastmod>2016-03-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://simecek.github.io/blog/2016/02/19/animated-ggplots-with-gganimate/</loc>
+    <loc>/2016/02/19/animated-ggplots-with-gganimate/</loc>
     <lastmod>2016-02-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://simecek.github.io/blog/2016/02/18/docker-one-liners/</loc>
+    <loc>/2016/02/18/docker-one-liners/</loc>
     <lastmod>2016-02-18T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://simecek.github.io/blog/2016/01/30/stop-and-remove-all-containers/</loc>
+    <loc>/2016/01/30/stop-and-remove-all-containers/</loc>
     <lastmod>2016-01-30T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://simecek.github.io/blog/2016/01/26/log-into-a-running-docker-container/</loc>
+    <loc>/2016/01/26/log-into-a-running-docker-container/</loc>
     <lastmod>2016-01-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://simecek.github.io/blog/post/</loc>
-    <lastmod>2017-02-17T23:19:03-05:00</lastmod>
+    <loc>/post/</loc>
+    <lastmod>2017-04-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://simecek.github.io/blog/</loc>
-    <lastmod>2017-02-17T23:19:03-05:00</lastmod>
+    <loc>/</loc>
+    <lastmod>2017-04-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

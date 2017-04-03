@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Tweeting With Tweepy &middot; Shredded Code </title>
+
+
+<link rel="stylesheet" href="../../../../css/slim.css">
+<link rel="stylesheet" href="../../../../css/highlight.min.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../../../../apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="../../../../favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="Shredded Code" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="../../../../">Shredded Code</a></h1>
+  <p class="site-tagline"></p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+      
+      <li><a href="../../../../about/">About</a></li>
+      
+      <li><a href="https://applyr.blogspot.com">Blogger</a></li>
+      
+      <li><a href="https://github.com/simecek/blog">GitHub</a></li>
+      
+      <li><a href="https://twitter.com/simecek">Twitter</a></li>
+       
+	  <li class="spacer">&ac;</li>
+  
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="posts">
+        <div class="post">
+          <h2 class="post-title"><a href="../../../../2017/03/31/tweeting-with-tweepy/">Tweeting With Tweepy</a></h2>
+          <span class="post-date">Mar 31, 2017 </span>
+          <div class="post-content">
+            
+
+<p>How to manage your Twitter account with Python. The notebook can be accessed from <a href="https://gist.github.com/simecek/b7fa2778ab1d2b0bf383a616877514dc">Github</a>.</p>
+
+<h2 id="function-get-list-of-users-that-liked-a-status">Function: Get List Of Users That Liked A Status</h2>
+
+<pre><code class="language-python"># copied from http://stackoverflow.com/questions/28982850/twitter-api-getting-list-of-users-who-favorited-a-status
+
+import urllib2
+import re
+
+def get_user_ids_of_post_likes(post_id):
+    try:
+        json_data = urllib2.urlopen('https://twitter.com/i/activity/favorited_popup?id=' + str(post_id)).read()
+        found_ids = re.findall(r'data-user-id=\\&quot;+\d+', json_data)
+        unique_ids = list(set([re.findall(r'\d+', match)[0] for match in found_ids]))
+        return unique_ids
+    except urllib2.HTTPError:
+        return False
+
+# Example: 
+# https://twitter.com/golan/status/731770343052972032
+
+print get_user_ids_of_post_likes(731770343052972032)
+
+# ['13520332', '416273351', '284966399']
+#
+# 13520332 +&gt; @TopLeftBrick
+# 416273351 =&gt; @Berenger_r
+# 284966399 =&gt; @FFrink
+</code></pre>
+
+<pre><code>['472203302', '13520332', '2388203390', '732265223701286912', '416273351', '6490642', '284966399']
+</code></pre>
+
+<h2 id="connect-to-twitter-with-tweepy">Connect to Twitter with Tweepy</h2>
+
+<pre><code class="language-python">import tweepy
+
+# create file twkeys.py with our Twitter API keys
+# see 
+from twkeys import keys
+ 
+SCREEN_NAME = keys['screen_name']
+CONSUMER_KEY = keys['consumer_key']
+CONSUMER_SECRET = keys['consumer_secret']
+ACCESS_TOKEN = keys['access_token']
+ACCESS_TOKEN_SECRET = keys['access_token_secret']
+
+auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+api = tweepy.API(auth)
+</code></pre>
+
+<h2 id="friends-and-followers">Friends and Followers</h2>
+
+<pre><code class="language-python"># get list of followers' and friends' (=following) ids
+followers = api.followers_ids(SCREEN_NAME)
+friends = api.friends_ids(SCREEN_NAME)
+</code></pre>
+
+<pre><code class="language-python"># print all friends that do not follow us
+for f in friends:
+    if f not in followers:
+        print(api.get_user(f).screen_name)
+</code></pre>
+
+<pre><code>J_the_Prepper
+EdEDock
+ArtrBautista
+Mrs_DarkDonado
+odd_wheel
+elearning_chad
+Angel_Cruijff
+mohhinder
+paerallax
+khalil_hughes
+super__shoot
+philippebiaut
+jamfpoz
+tedtedted
+datenteiler
+vikramcse10
+benjixx
+pro_cessor
+mrjohnmorrow
+aeroaks
+ViUX
+januszkowalczyk
+isizo
+gwuah_
+Containerhouse
+VaulsteinR
+DanielFritzEU
+allusernow
+ManikosN
+jdevoo
+SeattleDataGuy
+supreja_s
+</code></pre>
+
+<pre><code class="language-python"># unfollow non-following friends
+# for f in friends:
+#     if f not in followers:
+#        api.destroy_friendship(f)
+</code></pre>
+
+<h2 id="users-that-liked-any-of-my-recent-tweets">Users That Liked Any Of My Recent Tweets</h2>
+
+<pre><code class="language-python">my_recent_tweets = api.user_timeline(screen_name = SCREEN_NAME, count=50)
+len(my_recent_tweets)
+</code></pre>
+
+<pre><code>49
+</code></pre>
+
+<pre><code class="language-python"># apply 'get_user_ids_of_post_likes' to get users ids
+users_liking_recent_tweet = [get_user_ids_of_post_likes(my_tweet.id) for my_tweet in my_recent_tweets]
+
+import itertools
+users_liking_flat = set(list(itertools.chain.from_iterable(users_liking_recent_tweet)))
+</code></pre>
+
+<pre><code class="language-python"># from the list, let us remove followers, friends and yourself
+myself = api.get_user(screen_name = SCREEN_NAME).id
+unknown_liking = set([int(f) for f in users_liking_flat]) - set(friends) - set(followers) - set([myself])
+len(unknown_liking)
+</code></pre>
+
+<pre><code>34
+</code></pre>
+
+<h2 id="be-nice-to-people-that-like-your-tweets-and-follow-them">Be Nice To People That Like Your Tweets And Follow Them</h2>
+
+<pre><code class="language-python">for f in unknown_liking:
+    api.get_user(f).follow()
+</code></pre>
+
+          </div>
+        </div>
+        <div class="pagination">
+          <a class="btn previous " href="../../../../2017/04/03/r-magic-in-jupyter-notebooks/"> Prev</a>  
+          <a class="btn next " href="../../../../2017/02/17/data-science-amazon-vm-with-start/stop-functionality/"> Next</a> 
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+  
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+  
+</div>
+
+  </div>
+  <script src="../../../../js/slim.js"></script>
+  <script src="../../../../js/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-90647482-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+
+</html>
