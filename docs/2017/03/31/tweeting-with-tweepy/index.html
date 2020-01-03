@@ -49,74 +49,59 @@
           <h2 class="post-title"><a href="../../../../2017/03/31/tweeting-with-tweepy/">Tweeting With Tweepy</a></h2>
           <span class="post-date">Mar 31, 2017 </span>
           <div class="post-content">
-            
-
-<p>How to manage your Twitter account with Python. The notebook can be accessed from <a href="https://gist.github.com/simecek/b7fa2778ab1d2b0bf383a616877514dc">Github</a>.</p>
-
+            <p>How to manage your Twitter account with Python. The notebook can be accessed from <a href="https://gist.github.com/simecek/b7fa2778ab1d2b0bf383a616877514dc">Github</a>.</p>
 <h2 id="function-get-list-of-users-that-liked-a-status">Function: Get List Of Users That Liked A Status</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># copied from http://stackoverflow.com/questions/28982850/twitter-api-getting-list-of-users-who-favorited-a-status</span>
 
-<pre><code class="language-python"># copied from http://stackoverflow.com/questions/28982850/twitter-api-getting-list-of-users-who-favorited-a-status
+<span style="color:#f92672">import</span> urllib2
+<span style="color:#f92672">import</span> re
 
-import urllib2
-import re
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_user_ids_of_post_likes</span>(post_id):
+    <span style="color:#66d9ef">try</span>:
+        json_data <span style="color:#f92672">=</span> urllib2<span style="color:#f92672">.</span>urlopen(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">https://twitter.com/i/activity/favorited_popup?id=</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> str(post_id))<span style="color:#f92672">.</span>read()
+        found_ids <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>findall(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">data-user-id=</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">+</span><span style="color:#e6db74">\</span><span style="color:#e6db74">d+</span><span style="color:#e6db74">&#39;</span>, json_data)
+        unique_ids <span style="color:#f92672">=</span> list(set([re<span style="color:#f92672">.</span>findall(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">\</span><span style="color:#e6db74">d+</span><span style="color:#e6db74">&#39;</span>, match)[<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">for</span> match <span style="color:#f92672">in</span> found_ids]))
+        <span style="color:#66d9ef">return</span> unique_ids
+    <span style="color:#66d9ef">except</span> urllib2<span style="color:#f92672">.</span>HTTPError:
+        <span style="color:#66d9ef">return</span> False
 
-def get_user_ids_of_post_likes(post_id):
-    try:
-        json_data = urllib2.urlopen('https://twitter.com/i/activity/favorited_popup?id=' + str(post_id)).read()
-        found_ids = re.findall(r'data-user-id=\\&quot;+\d+', json_data)
-        unique_ids = list(set([re.findall(r'\d+', match)[0] for match in found_ids]))
-        return unique_ids
-    except urllib2.HTTPError:
-        return False
+<span style="color:#75715e"># Example: </span>
+<span style="color:#75715e"># https://twitter.com/golan/status/731770343052972032</span>
 
-# Example: 
-# https://twitter.com/golan/status/731770343052972032
+<span style="color:#66d9ef">print</span> get_user_ids_of_post_likes(<span style="color:#ae81ff">731770343052972032</span>)
 
-print get_user_ids_of_post_likes(731770343052972032)
-
-# ['13520332', '416273351', '284966399']
-#
-# 13520332 +&gt; @TopLeftBrick
-# 416273351 =&gt; @Berenger_r
-# 284966399 =&gt; @FFrink
+<span style="color:#75715e"># [&#39;13520332&#39;, &#39;416273351&#39;, &#39;284966399&#39;]</span>
+<span style="color:#75715e">#</span>
+<span style="color:#75715e"># 13520332 +&gt; @TopLeftBrick</span>
+<span style="color:#75715e"># 416273351 =&gt; @Berenger_r</span>
+<span style="color:#75715e"># 284966399 =&gt; @FFrink</span>
+</code></pre></div><pre><code>['472203302', '13520332', '2388203390', '732265223701286912', '416273351', '6490642', '284966399']
 </code></pre>
-
-<pre><code>['472203302', '13520332', '2388203390', '732265223701286912', '416273351', '6490642', '284966399']
-</code></pre>
-
 <h2 id="connect-to-twitter-with-tweepy">Connect to Twitter with Tweepy</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> tweepy
 
-<pre><code class="language-python">import tweepy
-
-# create file twkeys.py with our Twitter API keys
-# see 
-from twkeys import keys
+<span style="color:#75715e"># create file twkeys.py with our Twitter API keys</span>
+<span style="color:#75715e"># see </span>
+<span style="color:#f92672">from</span> twkeys <span style="color:#f92672">import</span> keys
  
-SCREEN_NAME = keys['screen_name']
-CONSUMER_KEY = keys['consumer_key']
-CONSUMER_SECRET = keys['consumer_secret']
-ACCESS_TOKEN = keys['access_token']
-ACCESS_TOKEN_SECRET = keys['access_token_secret']
+SCREEN_NAME <span style="color:#f92672">=</span> keys[<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">screen_name</span><span style="color:#e6db74">&#39;</span>]
+CONSUMER_KEY <span style="color:#f92672">=</span> keys[<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">consumer_key</span><span style="color:#e6db74">&#39;</span>]
+CONSUMER_SECRET <span style="color:#f92672">=</span> keys[<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">consumer_secret</span><span style="color:#e6db74">&#39;</span>]
+ACCESS_TOKEN <span style="color:#f92672">=</span> keys[<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">access_token</span><span style="color:#e6db74">&#39;</span>]
+ACCESS_TOKEN_SECRET <span style="color:#f92672">=</span> keys[<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">access_token_secret</span><span style="color:#e6db74">&#39;</span>]
 
-auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-api = tweepy.API(auth)
-</code></pre>
-
-<h2 id="friends-and-followers">Friends and Followers</h2>
-
-<pre><code class="language-python"># get list of followers' and friends' (=following) ids
-followers = api.followers_ids(SCREEN_NAME)
-friends = api.friends_ids(SCREEN_NAME)
-</code></pre>
-
-<pre><code class="language-python"># print all friends that do not follow us
-for f in friends:
-    if f not in followers:
-        print(api.get_user(f).screen_name)
-</code></pre>
-
-<pre><code>J_the_Prepper
+auth <span style="color:#f92672">=</span> tweepy<span style="color:#f92672">.</span>OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+auth<span style="color:#f92672">.</span>set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+api <span style="color:#f92672">=</span> tweepy<span style="color:#f92672">.</span>API(auth)
+</code></pre></div><h2 id="friends-and-followers">Friends and Followers</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># get list of followers&#39; and friends&#39; (=following) ids</span>
+followers <span style="color:#f92672">=</span> api<span style="color:#f92672">.</span>followers_ids(SCREEN_NAME)
+friends <span style="color:#f92672">=</span> api<span style="color:#f92672">.</span>friends_ids(SCREEN_NAME)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># print all friends that do not follow us</span>
+<span style="color:#66d9ef">for</span> f <span style="color:#f92672">in</span> friends:
+    <span style="color:#66d9ef">if</span> f <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> followers:
+        <span style="color:#66d9ef">print</span>(api<span style="color:#f92672">.</span>get_user(f)<span style="color:#f92672">.</span>screen_name)
+</code></pre></div><pre><code>J_the_Prepper
 EdEDock
 ArtrBautista
 Mrs_DarkDonado
@@ -149,49 +134,35 @@ jdevoo
 SeattleDataGuy
 supreja_s
 </code></pre>
-
-<pre><code class="language-python"># unfollow non-following friends
-# for f in friends:
-#     if f not in followers:
-#        api.destroy_friendship(f)
-</code></pre>
-
-<h2 id="users-that-liked-any-of-my-recent-tweets">Users That Liked Any Of My Recent Tweets</h2>
-
-<pre><code class="language-python">my_recent_tweets = api.user_timeline(screen_name = SCREEN_NAME, count=50)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># unfollow non-following friends</span>
+<span style="color:#75715e"># for f in friends:</span>
+<span style="color:#75715e">#     if f not in followers:</span>
+<span style="color:#75715e">#        api.destroy_friendship(f)</span>
+</code></pre></div><h2 id="users-that-liked-any-of-my-recent-tweets">Users That Liked Any Of My Recent Tweets</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">my_recent_tweets <span style="color:#f92672">=</span> api<span style="color:#f92672">.</span>user_timeline(screen_name <span style="color:#f92672">=</span> SCREEN_NAME, count<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>)
 len(my_recent_tweets)
+</code></pre></div><pre><code>49
 </code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># apply &#39;get_user_ids_of_post_likes&#39; to get users ids</span>
+users_liking_recent_tweet <span style="color:#f92672">=</span> [get_user_ids_of_post_likes(my_tweet<span style="color:#f92672">.</span>id) <span style="color:#66d9ef">for</span> my_tweet <span style="color:#f92672">in</span> my_recent_tweets]
 
-<pre><code>49
-</code></pre>
-
-<pre><code class="language-python"># apply 'get_user_ids_of_post_likes' to get users ids
-users_liking_recent_tweet = [get_user_ids_of_post_likes(my_tweet.id) for my_tweet in my_recent_tweets]
-
-import itertools
-users_liking_flat = set(list(itertools.chain.from_iterable(users_liking_recent_tweet)))
-</code></pre>
-
-<pre><code class="language-python"># from the list, let us remove followers, friends and yourself
-myself = api.get_user(screen_name = SCREEN_NAME).id
-unknown_liking = set([int(f) for f in users_liking_flat]) - set(friends) - set(followers) - set([myself])
+<span style="color:#f92672">import</span> itertools
+users_liking_flat <span style="color:#f92672">=</span> set(list(itertools<span style="color:#f92672">.</span>chain<span style="color:#f92672">.</span>from_iterable(users_liking_recent_tweet)))
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># from the list, let us remove followers, friends and yourself</span>
+myself <span style="color:#f92672">=</span> api<span style="color:#f92672">.</span>get_user(screen_name <span style="color:#f92672">=</span> SCREEN_NAME)<span style="color:#f92672">.</span>id
+unknown_liking <span style="color:#f92672">=</span> set([int(f) <span style="color:#66d9ef">for</span> f <span style="color:#f92672">in</span> users_liking_flat]) <span style="color:#f92672">-</span> set(friends) <span style="color:#f92672">-</span> set(followers) <span style="color:#f92672">-</span> set([myself])
 len(unknown_liking)
+</code></pre></div><pre><code>34
 </code></pre>
-
-<pre><code>34
-</code></pre>
-
 <h2 id="be-nice-to-people-that-like-your-tweets-and-follow-them">Be Nice To People That Like Your Tweets And Follow Them</h2>
-
-<pre><code class="language-python">for f in unknown_liking:
-    api.get_user(f).follow()
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> f <span style="color:#f92672">in</span> unknown_liking:
+    api<span style="color:#f92672">.</span>get_user(f)<span style="color:#f92672">.</span>follow()
+</code></pre></div>
           </div>
         </div>
         <div class="pagination">
-          <a class="btn previous " href="../../../../2017/04/03/r-magic-in-jupyter-notebooks/"> Prev</a>  
-          <a class="btn next " href="../../../../2017/02/17/data-science-amazon-vm-with-start/stop-functionality/"> Next</a> 
+          <a class="btn previous " href="../../../../2017/02/17/data-science-amazon-vm-with-start/stop-functionality/"> Prev</a>  
+          <a class="btn next " href="../../../../2017/04/03/r-magic-in-jupyter-notebooks/"> Next</a> 
         </div>
       </div>
     </div>

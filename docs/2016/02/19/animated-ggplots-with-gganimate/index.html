@@ -50,83 +50,76 @@
           <span class="post-date">Feb 19, 2016 </span>
           <div class="post-content">
             <p>There is now an easy way to create an animated GIF with <a href="https://github.com/dgrtwo/gganimate">gganimate</a> package:</p>
+<p><img src="../../../../images/gganimate_gapminder.gif" alt="gapminder demo"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(gapminder)
+<span style="color:#a6e22e">library</span>(ggplot2)
+<span style="color:#a6e22e">library</span>(gganimate)
+<span style="color:#a6e22e">theme_set</span>(<span style="color:#a6e22e">theme_bw</span>())
 
-<p><img src="../../../../images/gganimate_gapminder.gif" alt="gapminder demo" /></p>
+p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(gapminder, <span style="color:#a6e22e">aes</span>(gdpPercap, lifeExp, size <span style="color:#f92672">=</span> pop, color <span style="color:#f92672">=</span> continent, frame <span style="color:#f92672">=</span> year)) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_point</span>() <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">scale_x_log10</span>()
 
-<pre><code class="language-r">library(gapminder)
-library(ggplot2)
-library(gganimate)
-theme_set(theme_bw())
+<span style="color:#a6e22e">gg_animate</span>(p)
+</code></pre></div><p>See that all you need to do is to set <code>frame</code> variable. A more sophisticated example from <a href="http://varianceexplained.org/r/why-I-use-ggplot2/">David Robinson</a>.</p>
+<p><img src="../../../../images/gganimate_kernels.gif" alt="kernels demo"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(dplyr)
+<span style="color:#a6e22e">library</span>(ggplot2)
+<span style="color:#a6e22e">library</span>(broom)
+<span style="color:#a6e22e">library</span>(gganimate)
+<span style="color:#a6e22e">theme_set</span>(<span style="color:#a6e22e">theme_bw</span>())
 
-p &lt;- ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, color = continent, frame = year)) +
-  geom_point() +
-  scale_x_log10()
+<span style="color:#a6e22e">set.seed</span>(<span style="color:#ae81ff">2016</span>)
+min_weight <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">.0005</span>
 
-gg_animate(p)
-</code></pre>
+<span style="color:#75715e"># original data and bandwidths</span>
+bws <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">.25</span>, <span style="color:#ae81ff">.5</span>, <span style="color:#ae81ff">.75</span>, <span style="color:#ae81ff">1</span>)
+x_data <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(<span style="color:#a6e22e">rnorm</span>(<span style="color:#ae81ff">30</span>, <span style="color:#ae81ff">0</span>), <span style="color:#a6e22e">rnorm</span>(<span style="color:#ae81ff">15</span>, <span style="color:#ae81ff">6</span>))
 
-<p>See that all you need to do is to set <code>frame</code> variable. A more sophisticated example from <a href="http://varianceexplained.org/r/why-I-use-ggplot2/">David Robinson</a>.</p>
+<span style="color:#75715e"># add some y noise to be visible</span>
+dat <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data_frame</span>(x <span style="color:#f92672">=</span> x_data) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">mutate</span>(y <span style="color:#f92672">=</span> <span style="color:#a6e22e">rnorm</span>(<span style="color:#a6e22e">n</span>(), <span style="color:#ae81ff">.5</span>, <span style="color:#ae81ff">.025</span>))
 
-<p><img src="../../../../images/gganimate_kernels.gif" alt="kernels demo" /></p>
+<span style="color:#75715e"># density fits for each banwidth</span>
+fits <span style="color:#f92672">&lt;-</span> dat <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">inflate</span>(bw <span style="color:#f92672">=</span> bws) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">do</span>(<span style="color:#a6e22e">tidy</span>(<span style="color:#a6e22e">density</span>(.$x, bw <span style="color:#f92672">=</span> .$bw[1], from <span style="color:#f92672">=</span> <span style="color:#ae81ff">-4</span>, to <span style="color:#f92672">=</span> <span style="color:#ae81ff">9</span>, n <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>)))
+centers <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sort</span>(<span style="color:#a6e22e">unique</span>(fits<span style="color:#f92672">$</span>x))
 
-<pre><code class="language-r">library(dplyr)
-library(ggplot2)
-library(broom)
-library(gganimate)
-theme_set(theme_bw())
+<span style="color:#75715e"># calculate weights at each x0 center</span>
+prep <span style="color:#f92672">&lt;-</span> dat <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">inflate</span>(center <span style="color:#f92672">=</span> centers, bw <span style="color:#f92672">=</span> bws) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">mutate</span>(weight <span style="color:#f92672">=</span> <span style="color:#a6e22e">dnorm</span>(x, center, bw)) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">filter</span>(weight <span style="color:#f92672">&gt;</span> min_weight)
 
-set.seed(2016)
-min_weight &lt;- .0005
+<span style="color:#75715e"># also raster data for the background</span>
+ras <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">expand.grid</span>(x <span style="color:#f92672">=</span> <span style="color:#a6e22e">seq</span>(<span style="color:#a6e22e">min</span>(centers), <span style="color:#a6e22e">max</span>(centers), <span style="color:#ae81ff">.05</span>),
+                   y <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>)) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">inflate</span>(center <span style="color:#f92672">=</span> centers, bw <span style="color:#f92672">=</span> bws) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">mutate</span>(weight <span style="color:#f92672">=</span> <span style="color:#a6e22e">dnorm</span>(x, center, bw)) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">filter</span>(weight <span style="color:#f92672">&gt;</span> min_weight)
 
-# original data and bandwidths
-bws &lt;- c(.25, .5, .75, 1)
-x_data &lt;- c(rnorm(30, 0), rnorm(15, 6))
+<span style="color:#75715e"># create the plot with layers for the background, the points, the red fills, the</span>
+<span style="color:#75715e"># red vertical line, and the cumulative line plot</span>
+p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(prep, <span style="color:#a6e22e">aes</span>(x, y)) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_raster</span>(<span style="color:#a6e22e">aes</span>(alpha <span style="color:#f92672">=</span> weight, frame <span style="color:#f92672">=</span> center), data <span style="color:#f92672">=</span> ras, fill <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">gray&#34;</span>, hjust <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, vjust <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_point</span>(shape <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>, data <span style="color:#f92672">=</span> dat, alpha <span style="color:#f92672">=</span> <span style="color:#ae81ff">.25</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_point</span>(<span style="color:#a6e22e">aes</span>(alpha <span style="color:#f92672">=</span> weight, frame <span style="color:#f92672">=</span> center), color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">red&#34;</span>, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_vline</span>(<span style="color:#a6e22e">aes</span>(xintercept <span style="color:#f92672">=</span> x, frame <span style="color:#f92672">=</span> x), data <span style="color:#f92672">=</span> fits, lty <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>, color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">red&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_line</span>(<span style="color:#a6e22e">aes</span>(frame <span style="color:#f92672">=</span> x, cumulative <span style="color:#f92672">=</span> <span style="color:#66d9ef">TRUE</span>), color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">red&#34;</span>, data <span style="color:#f92672">=</span> fits) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">coord_cartesian</span>(ylim <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">max</span>(prep<span style="color:#f92672">$</span>y))) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">facet_wrap</span>(<span style="color:#f92672">~</span>bw) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">ylab</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>)
 
-# add some y noise to be visible
-dat &lt;- data_frame(x = x_data) %&gt;%
-  mutate(y = rnorm(n(), .5, .025))
-
-# density fits for each banwidth
-fits &lt;- dat %&gt;%
-  inflate(bw = bws) %&gt;%
-  do(tidy(density(.$x, bw = .$bw[1], from = -4, to = 9, n = 100)))
-centers &lt;- sort(unique(fits$x))
-
-# calculate weights at each x0 center
-prep &lt;- dat %&gt;%
-  inflate(center = centers, bw = bws) %&gt;%
-  mutate(weight = dnorm(x, center, bw)) %&gt;%
-  filter(weight &gt; min_weight)
-
-# also raster data for the background
-ras &lt;- expand.grid(x = seq(min(centers), max(centers), .05),
-                   y = c(0, 1)) %&gt;%
-  inflate(center = centers, bw = bws) %&gt;%
-  mutate(weight = dnorm(x, center, bw)) %&gt;%
-  filter(weight &gt; min_weight)
-
-# create the plot with layers for the background, the points, the red fills, the
-# red vertical line, and the cumulative line plot
-p &lt;- ggplot(prep, aes(x, y)) +
-  geom_raster(aes(alpha = weight, frame = center), data = ras, fill = &quot;gray&quot;, hjust = 0, vjust = 0) +
-  geom_point(shape = 1, size = 3, data = dat, alpha = .25) +
-  geom_point(aes(alpha = weight, frame = center), color = &quot;red&quot;, size = 3) +
-  geom_vline(aes(xintercept = x, frame = x), data = fits, lty = 2, color = &quot;red&quot;) +
-  geom_line(aes(frame = x, cumulative = TRUE), color = &quot;red&quot;, data = fits) +
-  coord_cartesian(ylim = c(0, max(prep$y))) +
-  facet_wrap(~bw) +
-  ylab(&quot;&quot;)
-
-g &lt;- gg_animate(p, interval = .1, title_frame = FALSE)
+g <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">gg_animate</span>(p, interval <span style="color:#f92672">=</span> <span style="color:#ae81ff">.1</span>, title_frame <span style="color:#f92672">=</span> <span style="color:#66d9ef">FALSE</span>)
 
 g
-</code></pre>
-
+</code></pre></div>
           </div>
         </div>
         <div class="pagination">
-          <a class="btn previous " href="../../../../2016/03/01/census-data-animated/"> Prev</a>  
-          <a class="btn next " href="../../../../2016/02/18/docker-one-liners/"> Next</a> 
+          <a class="btn previous " href="../../../../2016/02/18/docker-one-liners/"> Prev</a>  
+          <a class="btn next " href="../../../../2016/03/01/census-data-animated/"> Next</a> 
         </div>
       </div>
     </div>

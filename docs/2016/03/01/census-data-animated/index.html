@@ -50,65 +50,62 @@
           <span class="post-date">Mar 1, 2016 </span>
           <div class="post-content">
             <p>I just adapted the code from <a href="http://blog.revolutionanalytics.com/2016/02/japans-ageing-population-animated-with-r.html">here</a> to harvest Czech Republic population estimates.</p>
+<p><img src="../../../../images/czechrep_pyramid.gif" alt="czech"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(idbr) <span style="color:#75715e"># devtools::install_github(&#39;walkerke/idbr&#39;)</span>
+<span style="color:#a6e22e">library</span>(ggplot2)
+<span style="color:#a6e22e">library</span>(animation)
+<span style="color:#a6e22e">library</span>(dplyr)
+<span style="color:#a6e22e">library</span>(ggthemes)
 
-<p><img src="../../../../images/czechrep_pyramid.gif" alt="czech" /></p>
+<span style="color:#a6e22e">idb_api_key</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">YOUR API CODE HERE&#34;</span>)
 
-<pre><code class="language-r">library(idbr) # devtools::install_github('walkerke/idbr')
-library(ggplot2)
-library(animation)
-library(dplyr)
-library(ggthemes)
+male <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">idb1</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">EZ&#39;</span>, <span style="color:#ae81ff">2000</span><span style="color:#f92672">:</span><span style="color:#ae81ff">2050</span>, sex <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">male&#39;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">mutate</span>(POP <span style="color:#f92672">=</span> POP <span style="color:#f92672">*</span> <span style="color:#ae81ff">-1</span>,
+         SEX <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Male&#39;</span>)
 
-idb_api_key(&quot;YOUR API CODE HERE&quot;)
+female <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">idb1</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">EZ&#39;</span>, <span style="color:#ae81ff">2000</span><span style="color:#f92672">:</span><span style="color:#ae81ff">2050</span>, sex <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">female&#39;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">mutate</span>(SEX <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Female&#39;</span>)
 
-male &lt;- idb1('EZ', 2000:2050, sex = 'male') %&gt;%
-  mutate(POP = POP * -1,
-         SEX = 'Male')
+czechrep <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">rbind</span>(male, female) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">mutate</span>(abs_pop <span style="color:#f92672">=</span> <span style="color:#a6e22e">abs</span>(POP))
 
-female &lt;- idb1('EZ', 2000:2050, sex = 'female') %&gt;%
-  mutate(SEX = 'Female')
+<span style="color:#75715e"># Animate it with a for loop</span>
 
-czechrep &lt;- rbind(male, female) %&gt;%
-  mutate(abs_pop = abs(POP))
-
-# Animate it with a for loop
-
-saveGIF({
+<span style="color:#a6e22e">saveGIF</span>({
   
-  for (i in 2000:2050) {
+  <span style="color:#a6e22e">for </span>(i in <span style="color:#ae81ff">2000</span><span style="color:#f92672">:</span><span style="color:#ae81ff">2050</span>) {
     
-    title &lt;- as.character(i)
+    title <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">as.character</span>(i)
     
-    year_data &lt;- filter(czechrep, time == i)
+    year_data <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">filter</span>(czechrep, time <span style="color:#f92672">==</span> i)
     
-    g1 &lt;- ggplot(year_data, aes(x = AGE, y = POP, fill = SEX, width = 1)) +
-      coord_fixed() + 
-      coord_flip() +
-      geom_bar(data = subset(year_data, SEX == &quot;Female&quot;), stat = &quot;identity&quot;) +
-      geom_bar(data = subset(year_data, SEX == &quot;Male&quot;), stat = &quot;identity&quot;) +
-      scale_y_continuous(breaks = seq(-101000, 101000, 101000/2),
-                         labels = paste0(as.character(c(seq(0.1, 0, -0.05), c(0.05, 0.1))), &quot;m&quot;), 
-                         limits = c(min(czechrep$POP), max(czechrep$POP))) +
-      theme_economist(base_size = 14) + 
-      scale_fill_manual(values = c('#ff9896', '#d62728')) + 
-      ggtitle(paste0('Population structure of Czech Republic, ', title)) + 
-      ylab('Population') + 
-      xlab('Age') + 
-      theme(legend.position = &quot;bottom&quot;, legend.title = element_blank()) + 
-      guides(fill = guide_legend(reverse = TRUE))
+    g1 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(year_data, <span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> AGE, y <span style="color:#f92672">=</span> POP, fill <span style="color:#f92672">=</span> SEX, width <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>)) <span style="color:#f92672">+</span>
+      <span style="color:#a6e22e">coord_fixed</span>() <span style="color:#f92672">+</span> 
+      <span style="color:#a6e22e">coord_flip</span>() <span style="color:#f92672">+</span>
+      <span style="color:#a6e22e">geom_bar</span>(data <span style="color:#f92672">=</span> <span style="color:#a6e22e">subset</span>(year_data, SEX <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Female&#34;</span>), stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">identity&#34;</span>) <span style="color:#f92672">+</span>
+      <span style="color:#a6e22e">geom_bar</span>(data <span style="color:#f92672">=</span> <span style="color:#a6e22e">subset</span>(year_data, SEX <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Male&#34;</span>), stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">identity&#34;</span>) <span style="color:#f92672">+</span>
+      <span style="color:#a6e22e">scale_y_continuous</span>(breaks <span style="color:#f92672">=</span> <span style="color:#a6e22e">seq</span>(<span style="color:#ae81ff">-101000</span>, <span style="color:#ae81ff">101000</span>, <span style="color:#ae81ff">101000</span><span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>),
+                         labels <span style="color:#f92672">=</span> <span style="color:#a6e22e">paste0</span>(<span style="color:#a6e22e">as.character</span>(<span style="color:#a6e22e">c</span>(<span style="color:#a6e22e">seq</span>(<span style="color:#ae81ff">0.1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">-0.05</span>), <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0.05</span>, <span style="color:#ae81ff">0.1</span>))), <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">m&#34;</span>), 
+                         limits <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#a6e22e">min</span>(czechrep<span style="color:#f92672">$</span>POP), <span style="color:#a6e22e">max</span>(czechrep<span style="color:#f92672">$</span>POP))) <span style="color:#f92672">+</span>
+      <span style="color:#a6e22e">theme_economist</span>(base_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">14</span>) <span style="color:#f92672">+</span> 
+      <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">#ff9896&#39;</span>, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">#d62728&#39;</span>)) <span style="color:#f92672">+</span> 
+      <span style="color:#a6e22e">ggtitle</span>(<span style="color:#a6e22e">paste0</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Population structure of Czech Republic, &#39;</span>, title)) <span style="color:#f92672">+</span> 
+      <span style="color:#a6e22e">ylab</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Population&#39;</span>) <span style="color:#f92672">+</span> 
+      <span style="color:#a6e22e">xlab</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Age&#39;</span>) <span style="color:#f92672">+</span> 
+      <span style="color:#a6e22e">theme</span>(legend.position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">bottom&#34;</span>, legend.title <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_blank</span>()) <span style="color:#f92672">+</span> 
+      <span style="color:#a6e22e">guides</span>(fill <span style="color:#f92672">=</span> <span style="color:#a6e22e">guide_legend</span>(reverse <span style="color:#f92672">=</span> <span style="color:#66d9ef">TRUE</span>))
     
-    print(g1)
+    <span style="color:#a6e22e">print</span>(g1)
     
   }
   
-}, movie.name = 'czechrep_pyramid.gif', interval = 0.1, ani.width = 700, ani.height = 600)
-</code></pre>
-
+}, movie.name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">czechrep_pyramid.gif&#39;</span>, interval <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.1</span>, ani.width <span style="color:#f92672">=</span> <span style="color:#ae81ff">700</span>, ani.height <span style="color:#f92672">=</span> <span style="color:#ae81ff">600</span>)
+</code></pre></div>
           </div>
         </div>
         <div class="pagination">
-          <a class="btn previous " href="../../../../about/"> Prev</a>  
-          <a class="btn next " href="../../../../2016/02/19/animated-ggplots-with-gganimate/"> Next</a> 
+          <a class="btn previous " href="../../../../2016/02/19/animated-ggplots-with-gganimate/"> Prev</a>  
+          <a class="btn next " href="../../../../about/"> Next</a> 
         </div>
       </div>
     </div>
