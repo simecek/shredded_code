@@ -18,16 +18,7 @@ publishDir = "docs"
     name = "Personal page"
     url = "https://simecek.github.io"
 [[menu.main]]
-    name = "Twitter"
-    url = "https://twitter.com/simecek"
-[[menu.main]]
-    name = "LinkedIn"
-    url = "https://www.linkedin.com/in/simecekpetr"
-[[menu.main]]
-    name = "Google Scholar"
-    url = "https://scholar.google.com/citations?user=248ewekAAAAJ&hl=en"
-[[menu.main]]
-    name = "GitHub source"
+    name = "Source code"
     url = "https://github.com/simecek/blog"
 
 [params]
