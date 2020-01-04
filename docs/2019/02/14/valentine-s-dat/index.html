@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Valentine&#39;s Day &middot; Shredded Code </title>
+
+
+<link rel="stylesheet" href="../../../../css/slim.css">
+<link rel="stylesheet" href="../../../../css/highlight.min.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../../../../apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="../../../../favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="Shredded Code" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="../../../../">Shredded Code</a></h1>
+  <p class="site-tagline"></p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+      
+      <li><a href="../../../../about/">About</a></li>
+      
+      <li><a href="https://applyr.blogspot.com">Blogger</a></li>
+      
+      <li><a href="https://github.com/simecek/blog">GitHub</a></li>
+      
+      <li><a href="https://twitter.com/simecek">Twitter</a></li>
+       
+	  <li class="spacer">&ac;</li>
+  
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="posts">
+        <div class="post">
+          <h2 class="post-title"><a href="../../../../2019/02/14/valentine-s-dat/">Valentine&#39;s Day</a></h2>
+          <span class="post-date">Feb 14, 2019 </span>
+          <div class="post-content">
+            <p>You can run the script by</p>
+<p><code>python valentine.py.R</code></p>
+<p>or</p>
+<p><code>Rscript valentine.py.R</code></p>
+<p>For Windows or Mac, please, change the line #5 as instructed.</p>
+<pre><code>
+s = 'Python is awesome!'
+red = &quot;#FA5882&quot;
+a = eval(&quot;exec('import sys; import matplotlib.pyplot as plt; import numpy as np; print(s); t = np.arange(0,2*np.pi, 0.1); x = 16*np.sin(t)**3; y = 13*np.cos(t)-5*np.cos(2*t)-2*np.cos(3*t)-np.cos(4*t); plt.fill(x,y,color=red); plt.show(); sys.exit()')&quot;)
+print('R is great too!')
+X11()  # Use windows() or qartz() if on Windows or Mac
+t = seq(0, 2*pi, by=0.1)
+x = 16*sin(t)^3
+y = 13*cos(t) - 5*cos(2*t) - 2*cos(3*t) - cos(4*t)
+plot(x=x, y=y, type=&quot;n&quot;, xlab=&quot;&quot;, ylab=&quot;&quot;)
+polygon(x=x, y=y, col=red, border=red)
+cat(&quot;Press [Enter]: &quot;)
+x = readLines(file(&quot;stdin&quot;),1)
+</code></pre><p>Original Gist: <a href="https://gist.github.com/simecek/e6fc116d0f2ee971b980428568cdf316">https://gist.github.com/simecek/e6fc116d0f2ee971b980428568cdf316</a></p>
+
+          </div>
+        </div>
+        <div class="pagination">
+          <a class="btn previous " href="../../../../2017/04/03/r-magic-in-jupyter-notebooks/"> Prev</a>  
+          <a class="btn next " href="../../../../2019/06/09/time-measuring-decorator/"> Next</a> 
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+  
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+  
+</div>
+
+  </div>
+  <script src="../../../../js/slim.js"></script>
+  <script src="../../../../js/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-90647482-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+
+</html>

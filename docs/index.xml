@@ -6,10 +6,34 @@
     <description>Recent content on Shredded Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 03 Apr 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 09 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Time measuring decorator</title>
+      <link>/2019/06/09/time-measuring-decorator/</link>
+      <pubDate>Sun, 09 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/06/09/time-measuring-decorator/</guid>
+      <description>This is an example how to write your own time measuring decorator.
+import datetime from numpy.random import rand class time_decorator: def __init__(self, f): self.f = f print(f&amp;quot;Time decorator for {self.f.__name__} created&amp;quot;) def __call__(self, *args, **kwargs): start = datetime.datetime.now() result = self.f(*args, **kwargs) duration = datetime.datetime.now() - start print(f&amp;quot;Duration of {self.f.__name__} function call was {duration}.&amp;quot;) return result @time_decorator def sum_of_random_numbers(n): random_numbers = rand(n) return sum(random_numbers) Time decorator for sum_of_random_numbers created  sum_of_random_numbers(10_000_000) Duration of sum_of_random_numbers function call was 0:00:01.</description>
+    </item>
+    
+    <item>
+      <title>Valentine&#39;s Day</title>
+      <link>/2019/02/14/valentine-s-dat/</link>
+      <pubDate>Thu, 14 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/02/14/valentine-s-dat/</guid>
+      <description>You can run the script by
+python valentine.py.R
+or
+Rscript valentine.py.R
+For Windows or Mac, please, change the line #5 as instructed.
+ s = &#39;Python is awesome!&#39; red = &amp;quot;#FA5882&amp;quot; a = eval(&amp;quot;exec(&#39;import sys; import matplotlib.pyplot as plt; import numpy as np; print(s); t = np.arange(0,2*np.pi, 0.1); x = 16*np.sin(t)**3; y = 13*np.cos(t)-5*np.cos(2*t)-2*np.cos(3*t)-np.cos(4*t); plt.fill(x,y,color=red); plt.show(); sys.exit()&#39;)&amp;quot;) print(&#39;R is great too!&#39;) X11() # Use windows() or qartz() if on Windows or Mac t = seq(0, 2*pi, by=0.</description>
+    </item>
     
     <item>
       <title>R Magic In Jupyter Notebooks</title>

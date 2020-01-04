@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Time measuring decorator &middot; Shredded Code </title>
+
+
+<link rel="stylesheet" href="../../../../css/slim.css">
+<link rel="stylesheet" href="../../../../css/highlight.min.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../../../../apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="../../../../favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="Shredded Code" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="../../../../">Shredded Code</a></h1>
+  <p class="site-tagline"></p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+      
+      <li><a href="../../../../about/">About</a></li>
+      
+      <li><a href="https://applyr.blogspot.com">Blogger</a></li>
+      
+      <li><a href="https://github.com/simecek/blog">GitHub</a></li>
+      
+      <li><a href="https://twitter.com/simecek">Twitter</a></li>
+       
+	  <li class="spacer">&ac;</li>
+  
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="posts">
+        <div class="post">
+          <h2 class="post-title"><a href="../../../../2019/06/09/time-measuring-decorator/">Time measuring decorator</a></h2>
+          <span class="post-date">Jun 9, 2019 </span>
+          <div class="post-content">
+            <p>This is an example how to write your own time measuring decorator.</p>
+<pre><code>import datetime
+from numpy.random import rand
+
+class time_decorator:
+
+    def __init__(self, f):
+        self.f = f
+        print(f&quot;Time decorator for {self.f.__name__} created&quot;)
+
+    def __call__(self, *args, **kwargs):
+        start = datetime.datetime.now()
+        result = self.f(*args, **kwargs)
+        duration = datetime.datetime.now() - start
+        print(f&quot;Duration of {self.f.__name__} function call was {duration}.&quot;)
+        return result
+
+@time_decorator
+def sum_of_random_numbers(n):
+  random_numbers = rand(n)
+  return sum(random_numbers)
+</code></pre><pre><code>Time decorator for sum_of_random_numbers created
+</code></pre>
+<pre><code>sum_of_random_numbers(10_000_000)
+</code></pre><pre><code>Duration of sum_of_random_numbers function call was 0:00:01.092953.
+
+5001076.5500206305
+</code></pre>
+<p><strong>Original Gist</strong>: <a href="https://gist.github.com/simecek/8a3f579037dc31d9e91c5043f91e4509">https://gist.github.com/simecek/8a3f579037dc31d9e91c5043f91e4509</a></p>
+<p><strong>Try it in Colab</strong>: <a href="https://colab.research.google.com/gist/simecek/8a3f579037dc31d9e91c5043f91e4509/time_measuring_decorator.ipynb">https://colab.research.google.com/gist/simecek/8a3f579037dc31d9e91c5043f91e4509/time_measuring_decorator.ipynb</a></p>
+
+          </div>
+        </div>
+        <div class="pagination">
+          <a class="btn previous " href="../../../../2019/02/14/valentine-s-dat/"> Prev</a>  
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+  
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+  
+</div>
+
+  </div>
+  <script src="../../../../js/slim.js"></script>
+  <script src="../../../../js/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-90647482-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+
+</html>
