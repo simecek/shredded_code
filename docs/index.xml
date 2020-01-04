@@ -124,7 +124,7 @@ suppressPackageStartupMessages(library(ggplot2)) p &amp;lt;- ggplot(mpg, aes(dis
       
       <guid>/about/</guid>
       <description>This is a collection of posts that are too long for Twitter but too short and trivial for my blog. Mostly, it consists of shredded pieces of code I wish to remember.
-See LinkedIn for my CV, Google Scholar for my publications and Kaggle for my latest obsession.</description>
+For more shredded code, see my Github Gists. For more info about me, see my personal page, LinkedIn and a list of my publications.</description>
     </item>
     
     <item>

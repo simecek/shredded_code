@@ -15,14 +15,20 @@ publishDir = "docs"
     name = "About"
     url = "/about/"
 [[menu.main]]
-    name = "GitHub"
-    url = "https://github.com/simecek/blog"
-[[menu.main]]
-    name = "Blogger"
-    url = "https://applyr.blogspot.com"  
+    name = "Personal page"
+    url = "https://simecek.github.io"
 [[menu.main]]
     name = "Twitter"
     url = "https://twitter.com/simecek"
+[[menu.main]]
+    name = "LinkedIn"
+    url = "https://www.linkedin.com/in/simecekpetr"
+[[menu.main]]
+    name = "Google Scholar"
+    url = "https://scholar.google.com/citations?user=248ewekAAAAJ&hl=en"
+[[menu.main]]
+    name = "GitHub source"
+    url = "https://github.com/simecek/blog"
 
 [params]
     description = "A website built through Hugo and blogdown."
