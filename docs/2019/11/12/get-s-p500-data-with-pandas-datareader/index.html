@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Get S&amp;P500 data with pandas_datareader &middot; Shredded Code </title>
+
+
+<link rel="stylesheet" href="../../../../css/slim.css">
+<link rel="stylesheet" href="../../../../css/highlight.min.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../../../../apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="../../../../favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="Shredded Code" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="../../../../">Shredded Code</a></h1>
+  <p class="site-tagline"></p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+      
+      <li><a href="../../../../about/">About</a></li>
+      
+      <li><a href="https://applyr.blogspot.com">Blogger</a></li>
+      
+      <li><a href="https://github.com/simecek/blog">GitHub</a></li>
+      
+      <li><a href="https://twitter.com/simecek">Twitter</a></li>
+       
+	  <li class="spacer">&ac;</li>
+  
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="posts">
+        <div class="post">
+          <h2 class="post-title"><a href="../../../../2019/11/12/get-s-p500-data-with-pandas-datareader/">Get S&amp;P500 data with pandas_datareader</a></h2>
+          <span class="post-date">Nov 12, 2019 </span>
+          <div class="post-content">
+            <pre><code>import pandas as pd
+from pandas_datareader import data as wb
+</code></pre><h2 id="getting-data">Getting data</h2>
+<pre><code># ^GSPC is code for S&amp;P500, see https://finance.yahoo.com/quote/%5EGSPC/
+ticker_name = '^GSPC'
+
+ticker = wb.DataReader(ticker_name, start='2010-1-1', data_source='yahoo')
+print(ticker)
+</code></pre><pre><code>                   High          Low  ...      Volume    Adj Close
+Date                                  ...                         
+2010-01-04  1133.869995  1116.560059  ...  3991400000  1132.989990
+2010-01-05  1136.630005  1129.660034  ...  2491020000  1136.520020
+2010-01-06  1139.189941  1133.949951  ...  4972660000  1137.140015
+2010-01-07  1142.459961  1131.319946  ...  5270680000  1141.689941
+2010-01-08  1145.390015  1136.219971  ...  4389590000  1144.979980
+...                 ...          ...  ...         ...          ...
+2019-11-05  3083.949951  3072.149902  ...  4486130000  3074.620117
+2019-11-06  3078.340088  3065.889893  ...  4458190000  3076.780029
+2019-11-07  3097.770020  3080.229980  ...  4144640000  3085.179932
+2019-11-08  3093.090088  3073.580078  ...  3499150000  3093.080078
+2019-11-11  3088.330078  3075.820068  ...  1407760565  3087.010010
+
+[2482 rows x 6 columns]
+</code></pre>
+<h2 id="calculating-the-differences">Calculating the differences</h2>
+<pre><code># `Adj Close` -&gt; daily difference
+ticker['Close_diff'] = ticker['Adj Close'].diff()
+ticker['Close_diff'].head()
+
+starting_value = ticker['Adj Close'][0]
+</code></pre><h2 id="recreating-the-original-column">Recreating the original column</h2>
+<pre><code># daily difference -&gt; `Adj Close`
+ticker['Close_diff'].cumsum().fillna(0) + starting_value
+
+</code></pre><pre><code>Date
+2010-01-04    1132.989990
+2010-01-05    1136.520020
+2010-01-06    1137.140015
+2010-01-07    1141.689941
+2010-01-08    1144.979980
+                 ...     
+2019-11-05    3074.620117
+2019-11-06    3076.780029
+2019-11-07    3085.179932
+2019-11-08    3093.080078
+2019-11-11    3087.010010
+Name: Close_diff, Length: 2482, dtype: float64
+</code></pre>
+<pre><code>
+</code></pre><p><strong>Original Gist</strong>: <a href="https://gist.github.com/simecek/c9cc0b8f336ad5ad1f987492391b4da2">https://gist.github.com/simecek/c9cc0b8f336ad5ad1f987492391b4da2</a></p>
+<p><strong>Try it in Colab</strong>: <a href="https://colab.research.google.com/gist/simecek/c9cc0b8f336ad5ad1f987492391b4da2/s-p500-diff.ipynb">https://colab.research.google.com/gist/simecek/c9cc0b8f336ad5ad1f987492391b4da2/s-p500-diff.ipynb</a></p>
+
+          </div>
+        </div>
+        <div class="pagination">
+          <a class="btn previous " href="../../../../2019/10/06/saving-a-list-of-variables-together-into-a-compressed-file/"> Prev</a>  
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+  
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+  
+</div>
+
+  </div>
+  <script src="../../../../js/slim.js"></script>
+  <script src="../../../../js/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-90647482-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+
+</html>

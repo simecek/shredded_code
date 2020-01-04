@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Shredded Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 06 Oct 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 12 Nov 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Get S&amp;P500 data with pandas_datareader</title>
+      <link>/2019/11/12/get-s-p500-data-with-pandas-datareader/</link>
+      <pubDate>Tue, 12 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/11/12/get-s-p500-data-with-pandas-datareader/</guid>
+      <description>import pandas as pd from pandas_datareader import data as wb Getting data # ^GSPC is code for S&amp;amp;P500, see https://finance.yahoo.com/quote/%5EGSPC/ ticker_name = &#39;^GSPC&#39; ticker = wb.DataReader(ticker_name, start=&#39;2010-1-1&#39;, data_source=&#39;yahoo&#39;) print(ticker)  High Low ... Volume Adj Close Date ... 2010-01-04 1133.869995 1116.560059 ... 3991400000 1132.989990 2010-01-05 1136.630005 1129.660034 ... 2491020000 1136.520020 2010-01-06 1139.189941 1133.949951 ... 4972660000 1137.140015 2010-01-07 1142.459961 1131.319946 ... 5270680000 1141.689941 2010-01-08 1145.390015 1136.219971 ... 4389590000 1144.979980 ... ... .</description>
+    </item>
     
     <item>
       <title>Saving a list of variables together into a compressed file</title>
