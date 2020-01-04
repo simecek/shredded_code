@@ -55,6 +55,17 @@ For Windows or Mac, please, change the line #5 as instructed.
     </item>
     
     <item>
+      <title>Set options to save all your data when the script crashes</title>
+      <link>/2018/08/18/set-options-to-save-all-your-data-when-the-script-crashes/</link>
+      <pubDate>Sat, 18 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/08/18/set-options-to-save-all-your-data-when-the-script-crashes/</guid>
+      <description>If the running time of your R script is in hours and there is a danger of crash:
+save_all &amp;lt;- function() { save.image(&amp;quot;recover.rda&amp;quot;) } options(error = save_all) I wish I discovered this before
+&amp;quot;Error in pdf(...): failed to load default encoding&amp;quot; appeared on my screen.</description>
+    </item>
+    
+    <item>
       <title>R Magic In Jupyter Notebooks</title>
       <link>/2017/04/03/r-magic-in-jupyter-notebooks/</link>
       <pubDate>Mon, 03 Apr 2017 00:00:00 +0000</pubDate>

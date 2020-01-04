@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<title> Valentine&#39;s Day &middot; Shredded Code </title>
+<title> Set options to save all your data when the script crashes &middot; Shredded Code </title>
 
 
 <link rel="stylesheet" href="../../../../css/slim.css">
@@ -46,34 +46,23 @@
     <div class="content">
       <div class="posts">
         <div class="post">
-          <h2 class="post-title"><a href="../../../../2019/02/14/valentine-s-dat/">Valentine&#39;s Day</a></h2>
-          <span class="post-date">Feb 14, 2019 </span>
+          <h2 class="post-title"><a href="../../../../2018/08/18/set-options-to-save-all-your-data-when-the-script-crashes/">Set options to save all your data when the script crashes</a></h2>
+          <span class="post-date">Aug 18, 2018 </span>
           <div class="post-content">
-            <p>You can run the script by</p>
-<p><code>python valentine.py.R</code></p>
-<p>or</p>
-<p><code>Rscript valentine.py.R</code></p>
-<p>For Windows or Mac, please, change the line #5 as instructed.</p>
-<pre><code>
-s = 'Python is awesome!'
-red = &quot;#FA5882&quot;
-a = eval(&quot;exec('import sys; import matplotlib.pyplot as plt; import numpy as np; print(s); t = np.arange(0,2*np.pi, 0.1); x = 16*np.sin(t)**3; y = 13*np.cos(t)-5*np.cos(2*t)-2*np.cos(3*t)-np.cos(4*t); plt.fill(x,y,color=red); plt.show(); sys.exit()')&quot;)
-print('R is great too!')
-X11()  # Use windows() or qartz() if on Windows or Mac
-t = seq(0, 2*pi, by=0.1)
-x = 16*sin(t)^3
-y = 13*cos(t) - 5*cos(2*t) - 2*cos(3*t) - cos(4*t)
-plot(x=x, y=y, type=&quot;n&quot;, xlab=&quot;&quot;, ylab=&quot;&quot;)
-polygon(x=x, y=y, col=red, border=red)
-cat(&quot;Press [Enter]: &quot;)
-x = readLines(file(&quot;stdin&quot;),1)
-</code></pre><p>Original Gist: <a href="https://gist.github.com/simecek/e6fc116d0f2ee971b980428568cdf316">https://gist.github.com/simecek/e6fc116d0f2ee971b980428568cdf316</a></p>
+            <p>If the running time of your R script is in hours and there is a danger of crash:</p>
+<pre><code>save_all &lt;- function() {
+  save.image(&quot;recover.rda&quot;)
+}
+options(error = save_all)
+</code></pre><p>I wish I discovered this before</p>
+<pre><code>&quot;Error in pdf(...): failed to load default encoding&quot;
+</code></pre><p>appeared on my screen.</p>
 
           </div>
         </div>
         <div class="pagination">
-          <a class="btn previous " href="../../../../2018/08/18/set-options-to-save-all-your-data-when-the-script-crashes/"> Prev</a>  
-          <a class="btn next " href="../../../../2019/06/09/time-measuring-decorator/"> Next</a> 
+          <a class="btn previous " href="../../../../2017/04/03/r-magic-in-jupyter-notebooks/"> Prev</a>  
+          <a class="btn next " href="../../../../2019/02/14/valentine-s-dat/"> Next</a> 
         </div>
       </div>
     </div>
