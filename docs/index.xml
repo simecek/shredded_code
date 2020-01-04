@@ -6,10 +6,20 @@
     <description>Recent content on Shredded Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 09 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 06 Oct 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Saving a list of variables together into a compressed file</title>
+      <link>/2019/10/06/saving-a-list-of-variables-together-into-a-compressed-file/</link>
+      <pubDate>Sun, 06 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/06/saving-a-list-of-variables-together-into-a-compressed-file/</guid>
+      <description>In Python, there is no simple equivalent of R&#39;s save and save.image functions that would serialize a list of variables into a single compressed file. I have decided to change that.
+import __main__ import pickle from bz2 import BZ2File from gzip import GzipFile from typing import Optional, List def save_env(path: str, objects: Optional[List[str]] = None, compress: str = &#39;gzip&#39;, protocol: int = -1): &amp;quot;&amp;quot;&amp;quot; Save the environment (list of objects) of Jupyter Notebook into a compressed file Args: path: path to the file objects: names of global objects to be saved compress: compression - default &#39;gzip&#39;, slower but better &#39;bz2&#39;, faster but much worse &#39;none&#39; protocol: pickle protocol version (-1 = latest) Inspired by https://stackoverflow.</description>
+    </item>
     
     <item>
       <title>Time measuring decorator</title>

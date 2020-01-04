@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Saving a list of variables together into a compressed file &middot; Shredded Code </title>
+
+
+<link rel="stylesheet" href="../../../../css/slim.css">
+<link rel="stylesheet" href="../../../../css/highlight.min.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../../../../apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="../../../../favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="Shredded Code" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="../../../../">Shredded Code</a></h1>
+  <p class="site-tagline"></p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+      
+      <li><a href="../../../../about/">About</a></li>
+      
+      <li><a href="https://applyr.blogspot.com">Blogger</a></li>
+      
+      <li><a href="https://github.com/simecek/blog">GitHub</a></li>
+      
+      <li><a href="https://twitter.com/simecek">Twitter</a></li>
+       
+	  <li class="spacer">&ac;</li>
+  
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="posts">
+        <div class="post">
+          <h2 class="post-title"><a href="../../../../2019/10/06/saving-a-list-of-variables-together-into-a-compressed-file/">Saving a list of variables together into a compressed file</a></h2>
+          <span class="post-date">Oct 6, 2019 </span>
+          <div class="post-content">
+            <p>In Python, there is no simple equivalent of R's <code>save</code> and <code>save.image</code> functions that would serialize a list of variables into a single compressed file. I have decided to change that.</p>
+<pre><code>import __main__
+import pickle
+from bz2 import BZ2File
+from gzip import GzipFile
+from typing import Optional, List
+
+
+def save_env(path: str, objects: Optional[List[str]] = None, compress: str = 'gzip', protocol: int = -1):
+    &quot;&quot;&quot;
+    Save the environment (list of objects) of Jupyter Notebook into a compressed file
+    Args:
+       path: path to the file
+       objects: names of global objects to be saved
+       compress: compression - default 'gzip', slower but better 'bz2', faster but much worse 'none'
+       protocol: pickle protocol version (-1 = latest)
+       
+    Inspired by https://stackoverflow.com/questions/2960864/how-can-i-save-all-the-variables-in-the-current-python-session
+    &quot;&quot;&quot;
+    if objects is None:
+        # TODO(petr): if objects is None, save all objects
+        raise NotImplementedError(&quot;Saving all objects not yet implemented.&quot;)
+
+    with _get_file_handler(path, compress, &quot;w&quot;) as fw:
+        pickle.dump(objects, fw)
+        for key in objects:
+            try:
+                pickle.dump(getattr(__main__, key), fw, protocol=protocol)
+            except TypeError:
+                raise TypeError('Don\'t know how to pickle: {}'.format(key))
+            except AttributeError:
+                raise AttributeError('Unknown object: {}'.format(key))
+
+
+def load_env(path: str, compress: str = 'gzip') -&gt; List[str]:
+    &quot;&quot;&quot;
+    Load the environment (saved previously by `save_env`)
+    Args:
+       path: path to the file
+       compress: compression used by `save_env`, either 'gzip' (default), 'bz2', or 'none'
+    Returns:
+        A list of object names that have been loaded.
+    &quot;&quot;&quot;
+
+    with _get_file_handler(path, compress, &quot;r&quot;) as fr:
+        objects = pickle.load(fr)
+        for key in objects:
+            setattr(__main__, key, pickle.load(fr))
+
+    return objects
+
+
+def _get_file_handler(tmp_path, compress, mode):
+    if compress == 'gzip':
+        return GzipFile(tmp_path, mode)
+    elif compress == 'bz2':
+        return BZ2File(tmp_path, mode)
+    elif compress == 'none':
+        return open(tmp_path, mode + 'b')
+    else:
+        raise NotImplementedError('Compress method {} is not implemented. Use &quot;gzip&quot;, &quot;bz2&quot; or &quot;none&quot; instead.'.format(compress))
+</code></pre><p><strong>Original Gist</strong>: <a href="https://gist.github.com/simecek/19588c61c3430834bec01c67effa9c4a">https://gist.github.com/simecek/19588c61c3430834bec01c67effa9c4a</a></p>
+
+          </div>
+        </div>
+        <div class="pagination">
+          <a class="btn previous " href="../../../../2019/06/09/time-measuring-decorator/"> Prev</a>  
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+  
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+  
+</div>
+
+  </div>
+  <script src="../../../../js/slim.js"></script>
+  <script src="../../../../js/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-90647482-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+
+</html>
