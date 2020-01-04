@@ -1,4 +1,4 @@
-baseurl = "https://simecek.github.io/blog/"
+baseurl = "https://simecek.github.io/shredded_code/"
 relativeurls = true
 languageCode = "en-us"
 title = "Shredded Code"
@@ -19,7 +19,7 @@ publishDir = "docs"
     url = "https://simecek.github.io"
 [[menu.main]]
     name = "Source code"
-    url = "https://github.com/simecek/blog"
+    url = "https://github.com/simecek/shredded_code"
 
 [params]
     description = "A website built through Hugo and blogdown."
